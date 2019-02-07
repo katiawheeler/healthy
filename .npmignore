@@ -1,0 +1,29 @@
+# directories
+__mocks__
+.storybook
+dist/styles
+semantic
+src
+tests
+utils
+!dist/utils
+
+# files
+.dockerignore
+.gitattributes
+.gitignore
+.gitlab-ci.yml
+.npmrc
+.prettierignore
+.prettierrc.json
+.yarnclean
+babel.config.js
+CONTRIBUTING.md
+jest.config.unit.js
+semantic.json
+setupTests.js
+wallaby.js
+
+# ci generated files
+version.sh
+.npmauth
