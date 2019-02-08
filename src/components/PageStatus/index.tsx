@@ -1,5 +1,9 @@
 import React from 'react';
 
-const PageStatus = ({hasError: boolean}) => <div>hi</div>
+type PageStatusProps = {
+    hasError: boolean
+};
+
+const PageStatus = (props: PageStatusProps) => <div>hi {props.hasError}</div>
 
 export default PageStatus;

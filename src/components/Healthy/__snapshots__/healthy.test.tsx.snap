@@ -4,7 +4,7 @@ exports[`src/components/Healthy render when there are multiple problemChildren s
 ShallowWrapper {
   Symbol(enzyme.__root__): [Circular],
   Symbol(enzyme.__unrendered__): <Healthy
-    api={
+    apis={
       Array [
         Object {
           "endpoint": "https://httpstat.us/404",
@@ -62,7 +62,7 @@ exports[`src/components/Healthy render when there are no problemChildren should 
 ShallowWrapper {
   Symbol(enzyme.__root__): [Circular],
   Symbol(enzyme.__unrendered__): <Healthy
-    api={
+    apis={
       Array [
         Object {
           "endpoint": "https://httpstat.us/200",
@@ -112,7 +112,7 @@ exports[`src/components/Healthy render when there is one problemChild when no cu
 ShallowWrapper {
   Symbol(enzyme.__root__): [Circular],
   Symbol(enzyme.__unrendered__): <Healthy
-    api={
+    apis={
       Array [
         Object {
           "endpoint": "https://httpstat.us/404",
@@ -162,7 +162,7 @@ exports[`src/components/Healthy render when there is one problemChild when there
 ShallowWrapper {
   Symbol(enzyme.__root__): [Circular],
   Symbol(enzyme.__unrendered__): <Healthy
-    api={
+    apis={
       Array [
         Object {
           "endpoint": "https://httpstat.us/404",

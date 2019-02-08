@@ -1,9 +1,8 @@
 import React from 'react';
-import { shallow, ShallowWrapper } from 'enzyme';
-import Healthy, { HealthyProps, HealthyState } from '.';
+import { shallow } from 'enzyme';
+import Healthy, { HealthyProps } from '.';
 import { begin } from '../../services/index';
-import { Api } from '../../typings/Api';
-import { Response } from '../../typings/Response';
+import { Api, Response } from '../../typings/Api';
 
 jest.mock('../../services/index');
 
@@ -14,7 +13,7 @@ describe('src/components/Healthy', () => {
   describe('componentDidMount', () => {
     it('should call begin', () => {
       const props: HealthyProps = {
-        api: [
+        apis: [
           {
             name: 'Test Api',
             endpoint: goodEndpoint,
@@ -38,7 +37,7 @@ describe('src/components/Healthy', () => {
     };
 
     const props: HealthyProps = {
-      api: [api],
+      apis: [api],
       onError: jest.fn(),
     };
 
@@ -72,7 +71,7 @@ describe('src/components/Healthy', () => {
   describe('handleClose', () => {
     it('should set hasError to false on state', () => {
       const props: HealthyProps = {
-        api: [
+        apis: [
           {
             name: 'Test Api',
             endpoint: goodEndpoint,
@@ -92,7 +91,7 @@ describe('src/components/Healthy', () => {
     describe('when problemChildren has a length === 0', () => {
       it('should return undefined', () => {
         const props: HealthyProps = {
-          api: [
+          apis: [
             {
               name: 'Test Api',
               endpoint: goodEndpoint,
@@ -122,7 +121,7 @@ describe('src/components/Healthy', () => {
           };
 
           const props: HealthyProps = {
-            api: [api],
+            apis: [api],
             onError: jest.fn(),
           };
 
@@ -153,7 +152,7 @@ describe('src/components/Healthy', () => {
           };
 
           const props: HealthyProps = {
-            api: [api],
+            apis: [api],
             onError: jest.fn(),
           };
 
@@ -189,7 +188,7 @@ describe('src/components/Healthy', () => {
         };
 
         const props: HealthyProps = {
-          api: [api, secondApi],
+          apis: [api, secondApi],
           onError: jest.fn(),
         };
 
@@ -208,7 +207,7 @@ describe('src/components/Healthy', () => {
     describe('when there are no problemChildren', () => {
       it('should match the snapshot', () => {
         const props: HealthyProps = {
-          api: [
+          apis: [
             {
               name: 'Api',
               endpoint: goodEndpoint,
@@ -232,7 +231,7 @@ describe('src/components/Healthy', () => {
             message: 'Not found',
           };
           const props: HealthyProps = {
-            api: [api],
+            apis: [api],
           };
           const component = shallow<Healthy>(<Healthy {...props} />);
           component.setState({ problemChildren: [{ api, response }] });
@@ -253,7 +252,7 @@ describe('src/components/Healthy', () => {
             message: 'Not found',
           };
           const props: HealthyProps = {
-            api: [api],
+            apis: [api],
           };
           const component = shallow<Healthy>(<Healthy {...props} />);
           component.setState({ problemChildren: [{ api, response }] });
@@ -281,10 +280,16 @@ describe('src/components/Healthy', () => {
           message: 'Not found',
         };
         const props: HealthyProps = {
-          api: [api, secondApi, thirdApi],
+          apis: [api, secondApi, thirdApi],
         };
         const component = shallow<Healthy>(<Healthy {...props} />);
-        component.setState({ problemChildren: [{ api, response }, { api: secondApi, response}, { api: thirdApi, response}] });
+        component.setState({
+          problemChildren: [
+            { api, response },
+            { api: secondApi, response },
+            { api: thirdApi, response },
+          ],
+        });
         expect(component).toMatchSnapshot();
       });
     });

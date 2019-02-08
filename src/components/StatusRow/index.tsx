@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Info, Indicator, Status } from './StatusRow.elements';
+import { Row, Info, Indicator, Status } from './StatusRow.styles';
 
 type StatusRowProps = {
   name: string;
