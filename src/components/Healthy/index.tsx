@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
-import { Api } from '../../typings/Api';
-import { Response } from '../../typings/Response';
+import { Api, Response, ApiWithResponse } from '../../typings/Api';
 import { begin } from '../../services';
 import { Handler } from '../../typings/Handler';
-import { BannerWrapper, BannerContent, CloseButton } from './healthy.styles';
+import { BannerWrapper, BannerContent, CloseButton } from './Healthy.styles';
 
-export interface HealthyProps {
+export type HealthyProps = {
   /** An array of API objects */
-  api: Array<Api>;
+  apis: Array<Api>;
   /** A callback to handle when one of the APIs errors */
   onError?: Handler;
   /** The interval at which to call the APIs in milliseconds */
@@ -26,14 +25,9 @@ export interface HealthyProps {
   isCloseable?: boolean;
 }
 
-export interface HealthyState {
+export type HealthyState = {
   hasError: boolean;
   problemChildren: Array<ApiWithResponse>;
-}
-
-interface ApiWithResponse {
-  api: Api;
-  response: Response;
 }
 
 class Healthy extends Component<HealthyProps> {
@@ -43,14 +37,14 @@ class Healthy extends Component<HealthyProps> {
   };
 
   componentDidMount = async () => {
-    await begin(this.props.api, this.handleError, this.props.interval, this.props.onResponse);
+    await begin(this.props.apis, this.handleError, this.props.interval, this.props.onResponse || undefined);
   };
 
-  handleError = async (api: Api, response: Response) => {
+  handleError = (api: Api, response: Response) => {
     const problemChildren = this.state.problemChildren;
     if (problemChildren.find(item => item.api.endpoint === api.endpoint) === undefined)
       problemChildren.push({ api, response });
-    await this.setState({
+    this.setState({
       problemChildren: problemChildren,
       hasError: true,
     });
@@ -82,7 +76,7 @@ class Healthy extends Component<HealthyProps> {
       this.state.hasError && (
         <BannerWrapper className={this.props.classes && this.props.classes.banner}>
           <BannerContent className={this.props.classes && this.props.classes.content}>
-            {message}
+            <span>{message}</span>
           </BannerContent>
           {this.props.isCloseable && (
             <CloseButton

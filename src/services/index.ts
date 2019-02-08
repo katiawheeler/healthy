@@ -1,5 +1,4 @@
-import { Api } from '../typings/Api';
-import { Response as ApiResponse } from '../typings/Response';
+import { Api, Response as ApiResponse } from '../typings/Api';
 import { Handler } from '../typings/Handler';
 
 /** Begins the chain of API calls */

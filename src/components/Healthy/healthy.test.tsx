@@ -1,6 +1,6 @@
 import React from 'react';
 import { shallow, ShallowWrapper } from 'enzyme';
-import Healthy, { HealthyProps, HealthyState } from './';
+import Healthy, { HealthyProps, HealthyState } from '.';
 import { begin } from '../../services/index';
 import { Api } from '../../typings/Api';
 import { Response } from '../../typings/Response';
