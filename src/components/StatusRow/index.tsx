@@ -13,7 +13,7 @@ const StatusRow = (props: StatusRowProps) => {
         <h4>{props.name}</h4>
       </Info>
       <Status>
-        <Indicator className={props.hasError ? 'error' : 'ok'}>{props.hasError ? 'Experiencing issues' : 'Operational'}</Indicator>
+        <Indicator className={props.hasError ? 'error' : 'ok'}>{props.hasError ? 'Service Interruption' : 'Operational'}</Indicator>
       </Status>
     </Row>
   );

@@ -36,6 +36,7 @@ class StatusPage extends Component<StatusPageProps> {
     return (
       <Container>
         <PageStatus hasError={this.state.problemChildren.length > 0} />
+
         {this.props.apis.map(api => (
           <StatusRow key={api.name + api.endpoint} name={api.name} hasError={false} />
         ))}

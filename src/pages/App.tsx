@@ -72,7 +72,7 @@ class App extends Component {
             }
           `}
         />
-        <StatusPage apis={oneFailing} />
+        <StatusPage apis={fiveFailing} />
         {/* <Healthy
           apis={fiveFailing}
         /> */}
