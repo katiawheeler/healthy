@@ -13,7 +13,7 @@ export const Row = styled('div')`
     border-radius: 0 0 4px 4px;
   }
 
-  &:first-child {
+  &.first {
     border-radius: 4px 4px 0 0;
     border-top: 1px solid #e0e0e0 !important;
   }

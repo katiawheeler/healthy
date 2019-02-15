@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Api, ApiWithResponse } from '../../typings/Api';
+import { Api, ApiWithResponse, Response } from '../../typings/Api';
 import { begin } from '../../services';
 import { Container } from './StatusPage.elements';
 import { PageStatus, StatusRow } from '../../components';
@@ -16,29 +16,53 @@ interface ApiWithError extends ApiWithResponse {
 }
 
 type StatusPageState = {
-  problemChildren: Array<ApiWithError>;
+  apis: Array<ApiWithError>;
+  hasError: boolean;
 };
 
 class StatusPage extends Component<StatusPageProps> {
   state: StatusPageState = {
-    problemChildren: [],
+    apis: [],
+    hasError: false,
   };
 
-  handleError = (api: Api) => {
-    console.log(api);
+  handleError = (api: Api, response: Response) => {
+    const apis = [...this.state.apis];
+    const index = apis.findIndex(stateApi => stateApi.api === api);
+    apis[index].hasError = true;
+    apis[index].response = response;
+
+    this.setState(
+      {
+        apis,
+        hasError: true
+      },
+      () => console.log(this.state.apis)
+    );
   };
 
   componentDidMount = async () => {
+    const apis = this.props.apis.map(api => ({ api, response: null, hasError: false }));
+
+    this.setState({
+      apis: apis,
+      hasError: false,
+    });
+
     await begin(this.props.apis, this.handleError, this.props.interval, undefined);
   };
 
   render() {
     return (
       <Container>
-        <PageStatus hasError={this.state.problemChildren.length > 0} />
-
-        {this.props.apis.map(api => (
-          <StatusRow key={api.name + api.endpoint} name={api.name} hasError={false} />
+        <PageStatus hasError={this.state.hasError} />
+        {this.state.apis.map((api, i) => (
+          <StatusRow
+            key={api.api.name + api.api.endpoint}
+            name={api.api.name}
+            hasError={api.hasError}
+            className={i === 0 ? 'first' : ''}
+          />
         ))}
       </Container>
     );

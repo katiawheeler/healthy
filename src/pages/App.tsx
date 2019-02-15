@@ -26,7 +26,7 @@ const oneFailing: Array<Api> = [
 const fiveFailing: Array<Api> = [
   {
     name: 'Values Default',
-    endpoint: 'https://httpstat.us/401',
+    endpoint: 'https://httpstat.us/200',
   },
   {
     name: 'not found',
