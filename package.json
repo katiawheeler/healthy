@@ -1,13 +1,13 @@
 {
-  "name": "@katiawheeler/healthy",
+  "name": "react-healthy",
   "version": "0.1.0",
   "author": "Katia Wheeler",
   "description": "Incrementally check and alert your users to the health of your APIs",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/katiawheeler/healthy/issues"
-},
-"homepage": "https://github.com/katiawheeler/healthy#readme",
+  },
+  "homepage": "https://github.com/katiawheeler/healthy#readme",
   "main": "build/index.js",
   "types": "lib/index.d.ts",
   "module": "build/index.js",
@@ -20,7 +20,8 @@
     "url": "https://github.com/katiawheeler/healthy.git"
   },
   "dependencies": {
-    "react": "^16.7.0"
+    "react": "^16.7.0",
+    "react-dom": "^16.7.0"
   },
   "scripts": {
     "analyze": "source-map-explorer 'build/static/js/*.js'",
@@ -33,10 +34,10 @@
     "lint": "tslint -p tsconfig.json",
     "lint:fix": "tslint --fix -p tsconfig.json",
     "prepare": "yarn build",
-    "prepublishOnly" : "yarn test:publish && yarn lint",
-    "preversion" : "yarn lint",
-    "version" : "yarn format && git add -A src",
-    "postversion" : "git push && git push --tags"
+    "prepublishOnly": "yarn test:publish && yarn lint",
+    "preversion": "yarn lint",
+    "version": "yarn format && git add -A src",
+    "postversion": "git push && git push --tags"
   },
   "eslintConfig": {
     "extends": "react-app"
