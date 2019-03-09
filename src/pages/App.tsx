@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import Healthy from '../components/Healthy';
 import { Api } from '../typings/Api';
-import { Response } from '../typings/Response';
 import { Global, css } from '@emotion/core';
+import StatusPage from './StatusPage';
 
 const oneFailing: Array<Api> = [
   {
@@ -23,14 +23,30 @@ const oneFailing: Array<Api> = [
   },
 ];
 
-const twoFailing: Array<Api> = [
+const fiveFailing: Array<Api> = [
   {
     name: 'Values Default',
-    endpoint: 'https://httpstat.us/401',
+    endpoint: 'https://httpstat.us/200',
   },
   {
     name: 'not found',
     endpoint: 'https://httpstat.us/404',
+  },
+  {
+    name: 'not found',
+    endpoint: 'https://httpstat.us/403',
+  },
+  {
+    name: 'not found',
+    endpoint: 'https://httpstat.us/500',
+  },
+  {
+    name: 'not found',
+    endpoint: 'https://httpstat.us/501',
+  },
+  {
+    name: 'not found',
+    endpoint: 'https://httpstat.us/409',
   },
 ];
 
@@ -56,18 +72,10 @@ class App extends Component {
             }
           `}
         />
-        <Healthy
-          isCloseable
-          api={oneFailing}
-          onError={(api: Api, response: Response) => {
-            console.log('handled error', api);
-            console.log('handled error response', response);
-          }}
-          onResponse={(api: Api, response: Response) => {
-            console.log('got api', api);
-            console.log('got response', response);
-          }}
-        />
+        <StatusPage apis={fiveFailing} />
+        {/* <Healthy
+          apis={fiveFailing}
+        /> */}
       </div>
     );
   }

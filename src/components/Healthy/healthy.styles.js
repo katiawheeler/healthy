@@ -11,7 +11,7 @@ export const BannerContent = styled('div')`
   padding: 20px;
   max-width: 1000px;
   font-size: 16px;
-  font-family: Arial, sans-serif;
+  font-family: 'Helvetica', 'Arial', sans-serif;
   margin: 0 auto;
   text-align: center;
 `;
@@ -31,7 +31,8 @@ export const CloseButton = styled('button')`
     background: #e53935;
   }
 
-  &:active, &:focus {
+  &:active,
+  &:focus {
     outline: none;
   }
 `;
