@@ -25,6 +25,9 @@ const makeCall = async (api: Api, onError: Handler, onResponse?: Handler) => {
     .catch(error => console.log('unhandled', error));
 };
 
+/**
+ * Handles the Response
+ */
 const handleResponse = (api: Api, response: Response, onError: Handler, onResponse?: Handler) => {
   const apiResponse: ApiResponse = {
     code: response.status,
