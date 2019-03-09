@@ -1,10 +1,10 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import Healthy, { HealthyProps } from '.';
-import { begin } from '../../services/index';
+import { begin } from '../../services/';
 import { Api, Response } from '../../typings/Api';
 
-jest.mock('../../services/index');
+jest.mock('../../services/');
 
 const goodEndpoint = 'https://httpstat.us/200';
 const badEndpoint = 'https://httpstat.us/404';

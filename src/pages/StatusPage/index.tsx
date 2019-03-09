@@ -36,8 +36,7 @@ class StatusPage extends Component<StatusPageProps> {
       {
         apis,
         hasError: true
-      },
-      () => console.log(this.state.apis)
+      }
     );
   };
 
