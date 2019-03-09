@@ -19,7 +19,7 @@
     "type": "git",
     "url": "https://github.com/katiawheeler/healthy.git"
   },
-  "peerDependencies": {
+  "dependencies": {
     "react": "^16.7.0"
   },
   "scripts": {
