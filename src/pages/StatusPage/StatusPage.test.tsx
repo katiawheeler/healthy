@@ -1,13 +1,13 @@
-import React from 'react';
 import { shallow } from 'enzyme';
-import StatusPage from './';
+import React from 'react';
 import { Api, Response } from '../../typings/Api';
+import StatusPage from './';
 jest.mock('../../services/');
 import { begin } from '../../services/';
 
 
 describe('src/pages/StatusPage', () => {
-    const apis: Array<Api> = [
+    const apis: Api[] = [
         {
             name: 'Api 1',
             endpoint: 'https://google.com',

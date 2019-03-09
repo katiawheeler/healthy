@@ -1,29 +1,17 @@
 # directories
+.vscode
 __mocks__
-.storybook
-dist/styles
-semantic
+coverage
 src
-tests
-utils
-!dist/utils
+public
 
 # files
-.dockerignore
+.babelrc
 .gitattributes
 .gitignore
-.gitlab-ci.yml
 .npmrc
 .prettierignore
 .prettierrc.json
-.yarnclean
-babel.config.js
-CONTRIBUTING.md
-jest.config.unit.js
-semantic.json
-setupTests.js
-wallaby.js
-
-# ci generated files
-version.sh
-.npmauth
+tsconfig.json
+tslint.json
+yarn-error.log

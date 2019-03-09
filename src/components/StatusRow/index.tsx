@@ -1,11 +1,11 @@
 import React from 'react';
-import { Row, Info, Indicator, Status } from './StatusRow.styles';
+import { Indicator, Info, Row, Status } from './StatusRow.styles';
 
-type StatusRowProps = {
+interface StatusRowProps {
   name: string;
   hasError: boolean;
   className: string;
-};
+}
 
 const StatusRow = (props: StatusRowProps) => {
   return (

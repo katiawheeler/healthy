@@ -1,32 +1,32 @@
 import React, { Component } from 'react';
-import { Api, ApiWithResponse, Response } from '../../typings/Api';
-import { begin } from '../../services';
-import { Container } from './StatusPage.elements';
 import { PageStatus, StatusRow } from '../../components';
+import { begin } from '../../services';
+import { Api, ApiWithResponse, Response } from '../../typings/Api';
+import { Container } from './StatusPage.elements';
 
-type StatusPageProps = {
+interface StatusPageProps {
   /** An array of API objects */
-  apis: Array<Api>;
+  apis: Api[];
   /** The interval at which to call the APIs in milliseconds */
   interval?: number;
-};
+}
 
 interface ApiWithError extends ApiWithResponse {
   hasError: boolean;
 }
 
-type StatusPageState = {
-  apis: Array<ApiWithError>;
+interface StatusPageState {
+  apis: ApiWithError[];
   hasError: boolean;
-};
+}
 
 class StatusPage extends Component<StatusPageProps> {
-  state: StatusPageState = {
+  public state: StatusPageState = {
     apis: [],
     hasError: false,
   };
 
-  handleError = (api: Api, response: Response) => {
+  public handleError = (api: Api, response: Response) => {
     const apis = [...this.state.apis];
     const index = apis.findIndex(stateApi => stateApi.api === api);
     apis[index].hasError = true;
@@ -40,18 +40,18 @@ class StatusPage extends Component<StatusPageProps> {
     );
   };
 
-  componentDidMount = async () => {
+  public componentDidMount = async () => {
     const apis = this.props.apis.map(api => ({ api, response: null, hasError: false }));
 
     this.setState({
-      apis: apis,
+      apis,
       hasError: false,
     });
 
     await begin(this.props.apis, this.handleError, this.props.interval, undefined);
   };
 
-  render() {
+  public render() {
     return (
       <Container>
         <PageStatus hasError={this.state.hasError} />

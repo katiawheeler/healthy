@@ -1,4 +1,4 @@
-export type Api = {
+export interface Api {
   name: string;
   endpoint: string;
   options?: {
@@ -6,10 +6,10 @@ export type Api = {
   };
 }
 
-export type Response = {
+export interface Response {
   code: number;
   message: string;
-};
+}
 
 export interface ApiWithResponse {
   api: Api;

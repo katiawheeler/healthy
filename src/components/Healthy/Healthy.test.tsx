@@ -1,5 +1,5 @@
-import React from 'react';
 import { shallow } from 'enzyme';
+import React from 'react';
 import Healthy, { HealthyProps } from '.';
 import { begin } from '../../services/';
 import { Api, Response } from '../../typings/Api';
@@ -15,8 +15,8 @@ describe('src/components/Healthy', () => {
       const props: HealthyProps = {
         apis: [
           {
-            name: 'Test Api',
             endpoint: goodEndpoint,
+            name: 'Test Api',
           },
         ],
       };
@@ -28,8 +28,8 @@ describe('src/components/Healthy', () => {
 
   describe('handleError', () => {
     const api: Api = {
-      name: 'Bad Api',
       endpoint: badEndpoint,
+      name: 'Bad Api',
     };
     const response: Response = {
       code: 404,
@@ -73,8 +73,8 @@ describe('src/components/Healthy', () => {
       const props: HealthyProps = {
         apis: [
           {
-            name: 'Test Api',
             endpoint: goodEndpoint,
+            name: 'Test Api',
           },
         ],
       };
@@ -93,8 +93,8 @@ describe('src/components/Healthy', () => {
         const props: HealthyProps = {
           apis: [
             {
-              name: 'Test Api',
               endpoint: goodEndpoint,
+              name: 'Test Api',
             },
           ],
         };
@@ -109,8 +109,8 @@ describe('src/components/Healthy', () => {
       describe('when a custom message was passed', () => {
         it('should return the custom message', () => {
           const api: Api = {
-            name: 'Bad Api',
             endpoint: badEndpoint,
+            name: 'Bad Api',
             options: {
               message: 'Hello, world',
             },
@@ -143,8 +143,8 @@ describe('src/components/Healthy', () => {
       describe('when no custom message was passed', () => {
         it('should return the default message', () => {
           const api: Api = {
-            name: 'Bad Api',
             endpoint: badEndpoint,
+            name: 'Bad Api',
           };
           const response: Response = {
             code: 404,
@@ -175,12 +175,12 @@ describe('src/components/Healthy', () => {
     describe('when problemChildren has a length > 1', () => {
       it('should list the number of services down', () => {
         const api: Api = {
-          name: 'Bad Api',
           endpoint: badEndpoint,
+          name: 'Bad Api',
         };
         const secondApi: Api = {
-          name: 'Bad Api',
           endpoint: badEndpoint,
+          name: 'Bad Api',
         };
         const response: Response = {
           code: 404,
@@ -209,8 +209,8 @@ describe('src/components/Healthy', () => {
         const props: HealthyProps = {
           apis: [
             {
-              name: 'Api',
               endpoint: goodEndpoint,
+              name: 'Api',
             },
           ],
         };
@@ -223,8 +223,8 @@ describe('src/components/Healthy', () => {
       describe('when no custom message is passed', () => {
         it('should match the snapshot', () => {
           const api: Api = {
+            endpoint: badEndpoint,            
             name: 'Bad Api',
-            endpoint: badEndpoint,
           };
           const response: Response = {
             code: 404,
@@ -241,8 +241,8 @@ describe('src/components/Healthy', () => {
       describe('when there is a custom message is passed', () => {
         it('should match the snapshot', () => {
           const api: Api = {
-            name: 'Bad Api',
             endpoint: badEndpoint,
+            name: 'Bad Api',
             options: {
               message: 'Custom Message, here',
             },
@@ -264,16 +264,16 @@ describe('src/components/Healthy', () => {
     describe('when there are multiple problemChildren', () => {
       it('should match the snapshot', () => {
         const api: Api = {
+          endpoint: badEndpoint,          
           name: 'Bad Api',
-          endpoint: badEndpoint,
         };
         const secondApi: Api = {
-          name: 'Bad Api',
           endpoint: badEndpoint,
+          name: 'Bad Api',
         };
         const thirdApi: Api = {
-          name: 'Bad Api',
           endpoint: badEndpoint,
+          name: 'Bad Api',
         };
         const response: Response = {
           code: 404,
