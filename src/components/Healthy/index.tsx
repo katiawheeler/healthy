@@ -7,9 +7,9 @@ import { BannerContent, BannerWrapper, CloseButton } from './Healthy.styles';
 export interface HealthyProps {
   /** An array of API objects */
   apis: Api[];
-  /** A callback to handle when one of the APIs errors */
+  /** A callback that's called after the component handles the error, for additional error handling */
   onError?: Handler;
-  /** The interval at which to call the APIs in milliseconds */
+  /** The interval at which to call the APIs in milliseconds; default is 30 seconds (30000) */
   interval?: number;
   /** A callback to handle all responses that are not errors, in case
    * you want to handle different responses differently
