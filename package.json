@@ -28,7 +28,7 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --watch --collectCoverage",
-    "test:publish": "react-scripts test",
+    "test:publish": "react-scripts test -u",
     "test:coverage": "react-scripts test --collectCoverage",
     "eject": "react-scripts eject",
     "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",

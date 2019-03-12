@@ -20,10 +20,16 @@ yarn add react-healthy
 
 ## Usage
 
-You can import one of the pre-made React components from the package or the functionality to create your own status page or banner.
+You can import one of the pre-made React components from the package or the functionality to create your own status page or banner. The only thing you need to adhere to is the shape of the APIs you pass in.
 
-### Using the banner component
-
-Using the banner component is as easy as dropping it into your 
+```
+interface Api {
+  name: string;
+  endpoint: string;
+  options?: {
+    message: string;
+  };
+}
+```
 
 NPM Package to come!
