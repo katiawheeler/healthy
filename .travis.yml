@@ -1,0 +1,18 @@
+language: node_js
+node_js:
+- stable
+cache:
+  directories:
+  - node_modules
+script:
+- yarn test:publish
+- yarn test:coverage
+- yarn build
+deploy:
+  provider: npm
+  email: katiawheeler.npm@gmail.com
+  api_key:
+    secure: S1Yai3uvfH+EyHJn39XSoZ7YFXAIhjuHHMWyZf6Ry7TXpwmcrnmhqPwB4cZZB8zNlfbzdn8uANV4MhZ9uIa+OG4hu9RUliPl8M/UHOkNlxRDE7W+A10SHYmSPpPmsKxb6yXDEjFJvs5xKW8SQ94HtnMdIR0JHGGxINeN+0mZTcGHTfft01Zam6/kuFCytXvtvg4OHakFsOO8vJHvnJKjxDBX6FX5DuDB6BAFcDHHJ3DYG233zL6MV6FXQtT36k58Z3j0H52s91kY8A+QgkZEmCXJdY/TbFFph6CeYo3gb6mm7BQVmxpZFMiteqK4EEtIf80q6e0Vqxv7uydgXMdEDNp+U42y0Yi0mC+totaHHR95xC8m4TCUDK7RvpJLis7elutEcWLmOScAUuSgZoAzLBtTtH8hn/Zqc40PwxK/45Zq/37oj9ozHrO7Up4SOdqliXmw8WQD6UE8/egXAvibuFoxyvEDwkYEeP80HF9WJU4l98xyHO8XfwWeNk0AL4/TwfLwV7PZU5asyMFoLk56EDHJGpTdR9uhlppETpNMOn2ybf5Cvdin7lGKVNFNIarCS8/NjR8+D+cQ57oK2OCqHGzYZgpwI2QDx/IY0jyFyRvj3NKp9cOE2xSOnIXbaahJ16zXwwoFBCI3AzoWtz0u3lyPHU3xx5o06UN+bnEp7PE=
+  on:
+    tags: true
+    repo: katiawheeler/healthy
