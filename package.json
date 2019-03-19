@@ -1,6 +1,6 @@
 {
   "name": "react-healthy",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "Katia Wheeler",
   "description": "Incrementally check and alert your users to the health of your APIs",
   "license": "ISC",

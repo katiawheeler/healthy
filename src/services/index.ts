@@ -40,7 +40,9 @@ const handleResponse = (api: Api, response: Response, onError: Handler, onRespon
     return;
   }
 
-  if (onResponse) { onResponse(api, apiResponse); }
+  if (onResponse) {
+    onResponse(api, apiResponse);
+  }
 };
 
 export default { begin, makeCall, handleResponse };
