@@ -1,8 +1,8 @@
-[![Build status](https://img.shields.io/travis/katiawheeler/healthy.svg?style=flat-square)](https://img.shields.io/travis/katiawheeler/healthy.svg?style=flat-square)
-[![Repo size](https://img.shields.io/github/repo-size/katiawheeler/healthy.svg?style=flat-square)](https://img.shields.io/github/repo-size/katiawheeler/healthy.svg?style=flat-square)
-[![Open Issues](https://img.shields.io/github/issues/katiawheeler/healthy.svg?style=flat-square)](https://img.shields.io/github/issues/katiawheeler/healthy.svg?style=flat-square)
-
 # Healthy
+
+[![Build status](https://img.shields.io/travis/katiawheeler/healthy.svg?style=flat-square)](https://img.shields.io/travis/katiawheeler/healthy.svg?style=flat-square)
+[![Build size](https://img.shields.io/bundlephobia/min/react-healthy.svg?style=flat-square)](https://img.shields.io/bundlephobia/min/react-healthy.svg?style=flat-square)
+[![Open Issues](https://img.shields.io/github/issues/katiawheeler/healthy.svg?style=flat-square)](https://img.shields.io/github/issues/katiawheeler/healthy.svg?style=flat-square)
 
 Healthy is a react-based health check application for the APIs serving your client application. Quickly alert your users to API issues.
 
@@ -14,13 +14,13 @@ Healthy is a react-based health check application for the APIs serving your clie
 
 ## Installation
 
-```
+```node
 npm i react-healthy
 ```
 
 or
 
-```
+```node
 yarn add react-healthy
 ```
 
@@ -95,10 +95,10 @@ const myAppsApis = [
 ];
 
 ReactDOM.render(
-  <React.Fragment>
+  <>
     <Healthy apis={myAppsApis} />
     <App />
-  </React.Fragment>
+  </>
   , document.getElementById('root'));
 
 
@@ -110,7 +110,5 @@ serviceWorker.unregister();
 ```
 
 ### Status Page
-
-
 
 NPM Package to come (and more docs)!

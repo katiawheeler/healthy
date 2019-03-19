@@ -1,7 +1,7 @@
-import React from 'react';
+import * as React from 'react';
 import { Banner } from './PageStatus.styles';
 
-interface PageStatusProps {
+export interface PageStatusProps {
     hasError: boolean
 }
 

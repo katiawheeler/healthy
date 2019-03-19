@@ -1,5 +1,5 @@
 import { shallow } from 'enzyme';
-import React from 'react';
+import * as React from 'react';
 import Healthy, { HealthyProps } from '.';
 import { begin } from '../../services/';
 import { Api, Response } from '../../typings/Api';

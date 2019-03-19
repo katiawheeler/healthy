@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import * as React from 'react';
 import { begin } from '../../services';
 import { Api, ApiWithResponse, Response } from '../../typings/Api';
 import { Handler } from '../../typings/Handler';
@@ -30,7 +30,7 @@ export interface HealthyState {
   problemChildren: ApiWithResponse[];
 }
 
-class Healthy extends Component<HealthyProps> {
+class Healthy extends React.Component<HealthyProps> {
   public state: HealthyState = {
     hasError: false,
     problemChildren: [],
