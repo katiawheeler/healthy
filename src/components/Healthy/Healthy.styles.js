@@ -26,6 +26,7 @@ export const CloseButton = styled('button')`
   box-shadow: none;
   cursor: pointer;
   font-size: 16px;
+  font-family: 'Helvetica','Arial',sans-serif;
 
   &:hover {
     background: #e53935;
