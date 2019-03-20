@@ -1,5 +1,5 @@
 import { shallow } from 'enzyme';
-import * as React from 'react';
+import React from 'react';
 import StatusRow, {StatusRowProps} from './index';
 import { Indicator, Info } from './StatusRow.styles';
 
@@ -14,7 +14,7 @@ describe('src/components/StatusRow', () => {
             it('should render one Indicator with the className = ok and text = Operational', () => {
                 const component = shallow<StatusRowProps>(<StatusRow name="Api Name" hasError={false} />);
                 const indicator = component.find(Indicator);
-                expect(indicator.props().className).toBe('ok')
+                expect(indicator.prop('className')).toBe('ok')
                 expect(indicator.children().text()).toBe('Operational')
             })
         });
@@ -23,7 +23,7 @@ describe('src/components/StatusRow', () => {
             it('should render one Indicator with the className = error and text = Service Interruption', () => {
                 const component = shallow<StatusRowProps>(<StatusRow name="Api Name" hasError />);
                 const indicator = component.find(Indicator);
-                expect(indicator.props().className).toBe('error')
+                expect(indicator.prop('className')).toBe('error')
                 expect(indicator.children().text()).toBe('Service Interruption')
             })
         })

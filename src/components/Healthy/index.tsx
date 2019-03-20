@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { begin } from '../../services';
 import { Api, ApiWithResponse, Response } from '../../typings/Api';
 import { Handler } from '../../typings/Handler';

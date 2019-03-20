@@ -1,5 +1,4 @@
-import * as React from 'react';
-import { Component } from 'react';
+import React, { Component } from 'react';
 import { PageStatus, StatusRow } from '../../components';
 import { begin } from '../../services';
 import { Api, ApiWithResponse, Response } from '../../typings/Api';

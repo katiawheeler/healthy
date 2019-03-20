@@ -1,5 +1,5 @@
 import { shallow } from 'enzyme';
-import * as React from 'react';
+import React from 'react';
 import { Api, Response } from '../../typings/Api';
 import StatusPage from './';
 jest.mock('../../services/');

@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React from 'react';
 import { Indicator, Info, Row, Status } from './StatusRow.styles';
 
 export interface StatusRowProps {
