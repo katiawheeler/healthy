@@ -32,7 +32,7 @@
     "check-types": "tsc",
     "build": "rimraf dist && rollup -c",
     "test": "react-scripts test --watch --collectCoverage",
-    "test:coverage": "react-scripts test --collectCoverage",
+    "test:publish": "react-scripts test --collectCoverage",
     "eject": "react-scripts eject",
     "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
     "lint": "tslint -p tsconfig.json",

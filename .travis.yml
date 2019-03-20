@@ -5,7 +5,7 @@ cache:
   directories:
   - node_modules
 script:
-- yarn test
+- yarn test:publish
 - yarn build
 deploy:
   provider: npm
