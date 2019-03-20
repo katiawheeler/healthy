@@ -1,6 +1,6 @@
 {
   "name": "react-healthy",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "author": "Katia Wheeler",
   "description": "Incrementally check and alert your users to the health of your APIs",
   "license": "ISC",
@@ -9,8 +9,7 @@
   },
   "homepage": "https://github.com/katiawheeler/healthy#readme",
   "main": "build/index.js",
-  "types": "lib/index.d.ts",
-  "module": "build/index.js",
+  "types": "build/index.d.ts",
   "files": [
     "build",
     "README.md"
@@ -20,6 +19,8 @@
     "url": "https://github.com/katiawheeler/healthy.git"
   },
   "dependencies": {
+    "@emotion/core": "^10.0.7",
+    "@emotion/styled": "^10.0.7",
     "react": "^16.7.0",
     "react-dom": "^16.7.0"
   },
@@ -50,8 +51,6 @@
     "not op_mini all"
   ],
   "devDependencies": {
-    "@emotion/core": "^10.0.7",
-    "@emotion/styled": "^10.0.7",
     "@types/enzyme": "^3.1.16",
     "@types/jest": "23.3.13",
     "@types/node": "10.12.21",
