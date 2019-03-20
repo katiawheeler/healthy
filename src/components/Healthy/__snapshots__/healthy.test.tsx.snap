@@ -166,10 +166,8 @@ ShallowWrapper {
       Array [
         Object {
           "endpoint": "https://httpstat.us/404",
+          "message": "Custom Message, here",
           "name": "Bad Api",
-          "options": Object {
-            "message": "Custom Message, here",
-          },
         },
       ]
     }

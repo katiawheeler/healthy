@@ -111,9 +111,7 @@ describe('src/components/Healthy', () => {
           const api: Api = {
             endpoint: badEndpoint,
             name: 'Bad Api',
-            options: {
-              message: 'Hello, world',
-            },
+            message: 'Hello, world',
           };
           const response: Response = {
             code: 404,
@@ -243,9 +241,7 @@ describe('src/components/Healthy', () => {
           const api: Api = {
             endpoint: badEndpoint,
             name: 'Bad Api',
-            options: {
-              message: 'Custom Message, here',
-            },
+            message: 'Custom Message, here',
           };
           const response: Response = {
             code: 404,

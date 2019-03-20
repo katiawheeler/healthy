@@ -22,7 +22,7 @@ export interface HealthyProps {
     closeButton?: string;
   };
   /** Whether or not to show a close icon - default is false */
-  isCloseable?: boolean;
+  closeable?: boolean;
 }
 
 export interface HealthyState {
@@ -58,8 +58,8 @@ class Healthy extends React.Component<HealthyProps> {
     if (this.state.problemChildren.length === 0) { return; }
     const firstApi: ApiWithResponse = this.state.problemChildren[0];
 
-    // set to default message or message provided in options
-    let message = firstApi.api.options ? firstApi.api.options.message : `We are currently experiencing issues with our ${
+    // set to default message or message provided
+    let message = firstApi.api.message ? firstApi.api.message : `We are currently experiencing issues with our ${
       firstApi.api.name
     } service`;
 
@@ -79,7 +79,7 @@ class Healthy extends React.Component<HealthyProps> {
           <BannerContent className={this.props.classes && this.props.classes.content}>
             <span>{message}</span>
           </BannerContent>
-          {this.props.isCloseable && (
+          {this.props.closeable && (
             <CloseButton
               onClick={this.handleClose}
               className={this.props.classes && this.props.classes.closeButton}
