@@ -51,6 +51,8 @@ There are three exports that you can utilize:
 
 ## Healthy
 
+![Healthy Banner](./docs/healthy_banner.gif)
+
 The `Healthy` component is a banner that will display at the top of your application, alerting your users to any issues with the APIs you pass in. It takes in the following prop options:
 
 ```ts
@@ -136,13 +138,21 @@ interface Response {
 }
 ```
 
+In addition, the `Api` objects that `Healthy` accepts can contain their own custom mesage. If that API errors, the message will be displayed in the banner instead of the default.
+
+![Custom Message](./docs/custom_message.png)
+
 ### Note
 
 If more than one API errors, a generic message will be displayed in the `Healthy` component.
 
+![Multiple Services](./docs/multiple_services.png)
+
 ---
 
 ## `StatusPage`
+
+![Status Page](./docs/status_page.gif)
 
 The `StatusPage` is a page level component that displays a list of your APIs and their statuses. It takes in the following prop options:
 

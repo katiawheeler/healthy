@@ -15,7 +15,10 @@ export const begin = async (
   });
 
   /** Set the timeout and do it again */
-  setTimeout(() => begin(apis, onError, currentInterval, onResponse || undefined), currentInterval);
+  setTimeout(
+    async () => await begin(apis, onError, currentInterval, onResponse || undefined),
+    currentInterval
+  );
 };
 
 /** Make the actual fetch and return a Response object */
