@@ -1,0 +1,20 @@
+# directories
+.vscode
+__mocks__
+coverage
+src
+public
+
+# files
+babel.config.js
+.gitattributes
+.gitignore
+.npmrc
+.prettierignore
+.prettierrc.json
+tsconfig.json
+tslint.json
+yarn-error.log
+.semantix.yml
+.travis.yml
+rollup.config.js
