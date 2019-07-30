@@ -1,13 +1,13 @@
-import styled from '@emotion/styled';
+import styled from 'styled-components';
 
-export const BannerWrapper = styled('div')`
+export const BannerWrapper = styled.div`
   color: white;
   background: #ef5350;
   width: 100%;
   position: relative;
 `;
 
-export const BannerContent = styled('div')`
+export const BannerContent = styled.div`
   padding: 20px;
   max-width: 1000px;
   font-size: 16px;
@@ -16,7 +16,7 @@ export const BannerContent = styled('div')`
   text-align: center;
 `;
 
-export const CloseButton = styled('button')`
+export const CloseButton = styled.button`
   position: absolute;
   top: 30%;
   right: 30px;

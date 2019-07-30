@@ -15,6 +15,5 @@ babel.config.js
 tsconfig.json
 tslint.json
 yarn-error.log
-.semantix.yml
 .travis.yml
 rollup.config.js

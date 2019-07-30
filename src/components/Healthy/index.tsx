@@ -1,96 +1,83 @@
-import React from 'react';
+import React, {useEffect, useState, useCallback, FunctionComponent} from 'react';
+import cloneDeep from 'lodash.clonedeep';
+
 import { begin } from '../../services';
+
 import { Api, ApiWithResponse, Response } from '../../typings/Api';
-import { Handler } from '../../typings/Handler';
+
 import { BannerContent, BannerWrapper, CloseButton } from './Healthy.styles';
+import { HealthyProps } from './types';
 
-export interface HealthyProps {
-  /** An array of API objects */
-  apis: Api[];
-  /** A callback that's called after the component handles the error, for additional error handling */
-  onError?: Handler;
-  /** The interval at which to call the APIs in milliseconds; default is 30 seconds (30000) */
-  interval?: number;
-  /** A callback to handle all responses that are not errors, in case
-   * you want to handle different responses differently
-   */
-  onResponse?: Handler;
-  /** CSS class names to assign to the banner, banner content, and close button */
-  classes?: {
-    banner?: string;
-    content?: string;
-    closeButton?: string;
-  };
-  /** Whether or not to show a close icon - default is false */
-  closeable?: boolean;
-}
+const Healthy: FunctionComponent<HealthyProps> = (props: HealthyProps) => {
+   const {
+    apis,
+    onError,
+    interval,
+    onResponse,
+    classes,
+    closeable
+   } = props;
 
-export interface HealthyState {
-  hasError: boolean;
-  problemChildren: ApiWithResponse[];
-}
+    const [hasError, setHasError] = useState(false);
+    const[problemChildren, setProblemChildren] = useState<ApiWithResponse[]>([]);
 
-class Healthy extends React.Component<HealthyProps> {
-  public state: HealthyState = {
-    hasError: false,
-    problemChildren: [],
-  };
+    const wrapperClass = classes && classes.banner;
+    const contentClass = classes && classes.content;
+    const buttonClass = classes && classes.closeButton;
+    
+    const handleError = useCallback((api: Api, response: Response) => {
+        const currentProblems: ApiWithResponse[] = cloneDeep(problemChildren);
 
-  public componentDidMount = async () => {
-    await begin(this.props.apis, this.handleError, this.props.interval, this.props.onResponse || undefined);
-  };
+        if(currentProblems.find((item: ApiWithResponse) => item.api.endpoint === api.endpoint) === undefined) {
+            const newProblem: ApiWithResponse = { api, response };
+            currentProblems.push(newProblem);
+            setProblemChildren(currentProblems);
+        }
 
-  public handleError = (api: Api, response: Response) => {
-    const problemChildren = this.state.problemChildren;
-    if (problemChildren.find(item => item.api.endpoint === api.endpoint) === undefined) {
-      problemChildren.push({ api, response });
-    }
-    this.setState({
-      problemChildren,
-      hasError: true,
-    });
-    if (this.props.onError) { this.props.onError(api, response); }
-  };
+        if(typeof onError === 'function') onError(api, response);
+    }, [onError]);
 
-  public handleClose = () => this.setState({ hasError: false });
+    // mount
+    useEffect(() => {
+        async function callApis() {
+            await begin(apis, handleError, interval, onResponse || undefined)
+        }
 
-  public determineMessage = () => {
-    if (this.state.problemChildren.length === 0) { return; }
-    const firstApi: ApiWithResponse = this.state.problemChildren[0];
+        callApis();
+    }, []);
 
-    // set to default message or message provided
-    let message = firstApi.api.message ? firstApi.api.message : `We are currently experiencing issues with our ${
-      firstApi.api.name
-    } service`;
+    const handleClose = () => setHasError(false);
 
-    // if there are more than one APIs down, show how many services are down
-    if (this.state.problemChildren.length > 1) {
-      message = `We are currently experiencing issues with ${this.state.problemChildren.length} services`;
+    const determineMessage = (): string => {
+        const firstProblem: ApiWithResponse = problemChildren[0];
+
+        // check for multiple problems
+        if(problemChildren.length > 1) {
+            message = `We are currently experiencing issues with ${problemChildren.length} services.`;
+        } else {
+            // set to default message or message provided
+            message = firstProblem.api.message ? firstProblem.api.message : `We are currently experiences issues with our ${firstProblem.api.name} service.`;
+        }
+
+        return message;
     }
 
-    return message;
-  };
+    let message: string = determineMessage();
 
-  public render() {
-    const message = this.determineMessage();
-    return (
-      this.state.hasError && (
-        <BannerWrapper className={this.props.classes && this.props.classes.banner}>
-          <BannerContent className={this.props.classes && this.props.classes.content}>
-            <span>{message}</span>
-          </BannerContent>
-          {this.props.closeable && (
-            <CloseButton
-              onClick={this.handleClose}
-              className={this.props.classes && this.props.classes.closeButton}
-            >
-              x
-            </CloseButton>
-          )}
+    return hasError ? (
+        <BannerWrapper className={wrapperClass}>
+            <BannerContent className={contentClass}>
+                <span>{message}</span>
+            </BannerContent>
+            {closeable && (
+                <CloseButton
+                onClick={handleClose}
+                className={buttonClass}></CloseButton>
+            )}
         </BannerWrapper>
-      )
-    );
-  }
+    ) : null
+
+
 }
 
 export default Healthy;

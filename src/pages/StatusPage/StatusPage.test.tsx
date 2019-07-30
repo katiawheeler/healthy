@@ -18,15 +18,6 @@ describe('src/pages/StatusPage', () => {
         }
     ];
 
-    describe('render', () => {
-        describe('default render', () => {
-            it('should match the snapshot', () => {
-                const component = shallow(<StatusPage apis={apis}/>);
-                expect(component).toMatchSnapshot();
-            })
-        })
-    });
-
     describe('handleError', () => {
         it('should update the api in state', async () => {
             const component = shallow<StatusPage>(<StatusPage apis={apis} />);
