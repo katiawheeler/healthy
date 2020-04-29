@@ -1,31 +1,46 @@
-import { shallow } from 'enzyme';
+import { render, cleanup } from '@testing-library/react';
 import React from 'react';
-import StatusRow, {StatusRowProps} from './index';
-import { Indicator, Info } from './StatusRow.styles';
+import StatusRow, { StatusRowProps } from './index';
+
+afterEach(cleanup);
 
 describe('src/components/StatusRow', () => {
-    describe('render', () => {
-        describe('when there is props.hasError = false', () => {
-            it('should render with the Api name', () => {
-                const component = shallow<StatusRowProps>(<StatusRow name="Api Name" hasError={false} />);
-                expect(component.find(Info).children().text()).toBe('Api Name')
-            });
+    it('should render the API name in the Ifo component', () => {
+        const props: StatusRowProps = {
+            name: 'Api',
+            hasError: false,
+        }
 
-            it('should render one Indicator with the className = ok and text = Operational', () => {
-                const component = shallow<StatusRowProps>(<StatusRow name="Api Name" hasError={false} />);
-                const indicator = component.find(Indicator);
-                expect(indicator.prop('className')).toBe('ok')
-                expect(indicator.children().text()).toBe('Operational')
-            })
+        const { getByTestId } = render(<StatusRow {...props} />);
+        const info = getByTestId('row').firstElementChild;
+        expect(info!.textContent).toBe('Api');
+    });
+
+    describe('when there is no error', () => {
+        const props: StatusRowProps = {
+            name: 'Api',
+            hasError: false,
+        }
+
+        it('should have an empty classname on indicator', () => {
+            const { getByTestId } = render(<StatusRow {...props} />);
+            const indicator = getByTestId('row').children[1].firstElementChild;
+            expect(indicator!.classList).not.toContain('error');
+            expect(indicator!.classList).toContain('ok');
         });
+    });
 
-        describe('when there is props.hasError = false', () => {
-            it('should render one Indicator with the className = error and text = Service Interruption', () => {
-                const component = shallow<StatusRowProps>(<StatusRow name="Api Name" hasError />);
-                const indicator = component.find(Indicator);
-                expect(indicator.prop('className')).toBe('error')
-                expect(indicator.children().text()).toBe('Service Interruption')
-            })
-        })
-    })
-})
+    describe('when there is an error', () => {
+        const props: StatusRowProps = {
+            name: 'Api',
+            hasError: true,
+        }
+
+        it('should have an error classname on indicator', () => {
+            const { getByTestId } = render(<StatusRow {...props} />);
+            const indicator = getByTestId('row').children[1].firstElementChild;
+            expect(indicator!.classList).not.toContain('ok');
+            expect(indicator!.classList).toContain('error');
+        });
+    });
+});

@@ -7,14 +7,14 @@ export interface StatusRowProps {
   className?: string;
 }
 
-const StatusRow = (props: StatusRowProps) => {
+function StatusRow({ name, hasError, className = '' }: StatusRowProps) {
   return (
-    <Row className={props.className}>
+    <Row className={className} data-testid="row">
       <Info>
-        <h4>{props.name}</h4>
+        <h4>{name}</h4>
       </Info>
       <Status>
-        <Indicator className={props.hasError ? 'error' : 'ok'}>{props.hasError ? 'Service Interruption' : 'Operational'}</Indicator>
+        <Indicator className={hasError ? 'error' : 'ok'}>{hasError ? 'Service Interruption' : 'Operational'}</Indicator>
       </Status>
     </Row>
   );

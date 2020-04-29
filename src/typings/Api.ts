@@ -16,5 +16,5 @@ export interface Response {
 
 export interface ApiWithResponse {
   api: Api;
-  response: Response;
+  response: Response | null;
 }

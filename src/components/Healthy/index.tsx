@@ -1,10 +1,10 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback, FunctionComponent } from 'react';
 import { begin } from '../../services';
 import { Api, ApiWithResponse, Response } from '../../typings/Api';
 import { Handler } from '../../typings/Handler';
 import { BannerContent, BannerWrapper, CloseButton } from './Healthy.styles';
 
-export interface HealthyProps {
+export type HealthyProps = {
   /** An array of API objects */
   apis: Api[];
   /** A callback that's called after the component handles the error, for additional error handling */
@@ -25,7 +25,23 @@ export interface HealthyProps {
   closeable?: boolean;
 }
 
-export function HealthyComponent({ apis, onError, interval, onResponse, classes, closeable }: HealthyProps) {
+export const determineMessage = (problemChildren: ApiWithResponse[]) => {
+  if (!problemChildren.length) return;
+
+  // single issue
+  if (problemChildren.length === 1) {
+    const issueApi: ApiWithResponse = problemChildren[0];
+    const defaultMessage = `We are currently experiencing issues with our ${
+      issueApi.api.name
+      } service`;
+    return issueApi.api.message ? issueApi.api.message : defaultMessage
+  } else {
+    // multiple issues
+    return `We are currently experiencing issues with ${problemChildren.length} services`;
+  }
+}
+
+export function Healthy({ apis, onError, interval = undefined, onResponse = undefined, classes = undefined, closeable = false }: HealthyProps) {
   const [hasError, setHasError] = useState<boolean>(false);
   const [problemChildren, setProblemChildren] = useState<ApiWithResponse[]>([]);
 
@@ -50,30 +66,15 @@ export function HealthyComponent({ apis, onError, interval, onResponse, classes,
 
   const handleClose = () => setHasError(false)
 
-  const determineMessage = () => {
-    if (!problemChildren.length) return;
-
-    // single issue
-    if (problemChildren.length === 1) {
-      const issueApi: ApiWithResponse = problemChildren[0];
-      const defaultMessage = `We are currently experiencing issues with our ${
-        issueApi.api.name
-        } service`;
-      return issueApi.api.message ? issueApi.api.message : defaultMessage
-    } else {
-      // multiple issues
-      return `We are currently experiencing issues with ${problemChildren.length} services`;
-    }
-  }
-
   return (
     hasError ? (
       <BannerWrapper className={classes && classes.banner}>
         <BannerContent className={classes && classes.content}>
-          <span>{determineMessage()}</span>
+          <span>{determineMessage(problemChildren)}</span>
         </BannerContent>
         {closeable && (
           <CloseButton
+            data-testid="close"
             onClick={handleClose}
             className={classes && classes.closeButton}
           >
@@ -85,4 +86,4 @@ export function HealthyComponent({ apis, onError, interval, onResponse, classes,
   )
 }
 
-export default HealthyComponent;
+export default Healthy;

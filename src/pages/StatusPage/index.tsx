@@ -1,8 +1,8 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import { PageStatus, StatusRow } from '../../components';
 import { begin } from '../../services';
 import { Api, ApiWithResponse, Response } from '../../typings/Api';
-import { Container } from './StatusPage.elements';
+import { Container } from './StatusPage.styles';
 
 interface StatusPageProps {
   /** An array of API objects */
@@ -15,57 +15,47 @@ interface ApiWithError extends ApiWithResponse {
   hasError: boolean;
 }
 
-interface StatusPageState {
-  apis: ApiWithError[];
-  hasError: boolean;
+function mapApis(apis: Api[]): ApiWithError[] {
+  return apis.map(api => ({ api, response: null, hasError: false }))
 }
 
-class StatusPage extends Component<StatusPageProps> {
-  public state: StatusPageState = {
-    apis: [],
-    hasError: false,
+function StatusPage({ apis: propApis, interval = undefined }: StatusPageProps) {
+  const [apis, setApis] = useState(mapApis(propApis))
+  const [hasError, setHasError] = useState(false);
+
+  const handleError = (api: Api, response: Response) => {
+    setHasError(true);
+
+    const currentApis = [...apis];
+    const index = currentApis.findIndex(stateApi => stateApi.api === api);
+    currentApis[index].hasError = true;
+    currentApis[index].response = response;
+
+    setApis(currentApis);
   };
 
-  public handleError = (api: Api, response: Response) => {
-    const apis = [...this.state.apis];
-    const index = apis.findIndex(stateApi => stateApi.api === api);
-    apis[index].hasError = true;
-    apis[index].response = response;
+  useEffect(() => {
+    async function startChecking() {
+      await begin(propApis, handleError, interval, undefined);
+    }
 
-    this.setState(
-      {
-        apis,
-        hasError: true
-      }
-    );
-  };
+    startChecking();
+  }, []);
 
-  public componentDidMount = async () => {
-    const apis = this.props.apis.map(api => ({ api, response: null, hasError: false }));
-
-    this.setState({
-      apis,
-      hasError: false,
-    });
-
-    await begin(this.props.apis, this.handleError, this.props.interval, undefined);
-  };
-
-  public render() {
-    return (
-      <Container>
-        <PageStatus hasError={this.state.hasError} />
-        {this.state.apis.map((api, i) => (
-          <StatusRow
-            key={api.api.name + api.api.endpoint}
-            name={api.api.name}
-            hasError={api.hasError}
-            className={i === 0 ? 'first' : ''}
-          />
-        ))}
-      </Container>
-    );
-  }
+  return (
+    <Container>
+      <PageStatus hasError={hasError} />
+      {apis.map((api, i) => (
+        <StatusRow
+          key={api.api.name + api.api.endpoint}
+          name={api.api.name}
+          hasError={api.hasError}
+          className={i === 0 ? 'first' : ''}
+        />
+      ))}
+    </Container>
+  )
 }
+
 
 export default StatusPage;

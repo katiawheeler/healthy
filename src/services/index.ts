@@ -21,7 +21,7 @@ export const begin = async (
 };
 
 /** Make the actual fetch and return a Response object */
-const makeCall = async (api: Api, onError: Handler, onResponse?: Handler) => {
+const makeCall = async (api: Api, onError: Handler, onResponse: Handler | undefined) => {
   await fetch(api.endpoint)
     .then(apiResponse => handleResponse(api, apiResponse, onError, onResponse))
     // tslint:disable-next-line
