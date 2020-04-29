@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { begin } from '../../services';
 import { Api, ApiWithResponse, Response } from '../../typings/Api';
 import { Handler } from '../../typings/Handler';
@@ -25,72 +25,64 @@ export interface HealthyProps {
   closeable?: boolean;
 }
 
-export interface HealthyState {
-  hasError: boolean;
-  problemChildren: ApiWithResponse[];
-}
+export function HealthyComponent({ apis, onError, interval, onResponse, classes, closeable }: HealthyProps) {
+  const [hasError, setHasError] = useState<boolean>(false);
+  const [problemChildren, setProblemChildren] = useState<ApiWithResponse[]>([]);
 
-class Healthy extends React.Component<HealthyProps> {
-  public state: HealthyState = {
-    hasError: false,
-    problemChildren: [],
-  };
-
-  public componentDidMount = async () => {
-    await begin(this.props.apis, this.handleError, this.props.interval, this.props.onResponse || undefined);
-  };
-
-  public handleError = (api: Api, response: Response) => {
-    const problemChildren = this.state.problemChildren;
-    if (problemChildren.find(item => item.api.endpoint === api.endpoint) === undefined) {
-      problemChildren.push({ api, response });
-    }
-    this.setState({
-      problemChildren,
-      hasError: true,
-    });
-    if (this.props.onError) { this.props.onError(api, response); }
-  };
-
-  public handleClose = () => this.setState({ hasError: false });
-
-  public determineMessage = () => {
-    if (this.state.problemChildren.length === 0) { return; }
-    const firstApi: ApiWithResponse = this.state.problemChildren[0];
-
-    // set to default message or message provided
-    let message = firstApi.api.message ? firstApi.api.message : `We are currently experiencing issues with our ${
-      firstApi.api.name
-    } service`;
-
-    // if there are more than one APIs down, show how many services are down
-    if (this.state.problemChildren.length > 1) {
-      message = `We are currently experiencing issues with ${this.state.problemChildren.length} services`;
+  useEffect(() => {
+    async function startChecking() {
+      await begin(apis, handleError, interval, onResponse);
     }
 
-    return message;
-  };
+    startChecking();
+  }, [])
 
-  public render() {
-    const message = this.determineMessage();
-    return (
-      this.state.hasError && (
-        <BannerWrapper className={this.props.classes && this.props.classes.banner}>
-          <BannerContent className={this.props.classes && this.props.classes.content}>
-            <span>{message}</span>
-          </BannerContent>
-          {this.props.closeable && (
-            <CloseButton
-              onClick={this.handleClose}
-              className={this.props.classes && this.props.classes.closeButton}
-            >
-              x
-            </CloseButton>
-          )}
-        </BannerWrapper>
-      )
-    );
+  const handleError = useCallback((api: Api, response: Response) => {
+    setHasError(true);
+    const currentProblems = [...problemChildren];
+    if (currentProblems.find((item: ApiWithResponse) => item.api.endpoint === api.endpoint) === undefined) {
+      currentProblems.push({ api, response });
+      setProblemChildren(currentProblems);
+    }
+
+    if (typeof onError === 'function') onError(api, response);
+  }, [onError])
+
+  const handleClose = () => setHasError(false)
+
+  const determineMessage = () => {
+    if (!problemChildren.length) return;
+
+    // single issue
+    if (problemChildren.length === 1) {
+      const issueApi: ApiWithResponse = problemChildren[0];
+      const defaultMessage = `We are currently experiencing issues with our ${
+        issueApi.api.name
+        } service`;
+      return issueApi.api.message ? issueApi.api.message : defaultMessage
+    } else {
+      // multiple issues
+      return `We are currently experiencing issues with ${problemChildren.length} services`;
+    }
   }
+
+  return (
+    hasError ? (
+      <BannerWrapper className={classes && classes.banner}>
+        <BannerContent className={classes && classes.content}>
+          <span>{determineMessage()}</span>
+        </BannerContent>
+        {closeable && (
+          <CloseButton
+            onClick={handleClose}
+            className={classes && classes.closeButton}
+          >
+            x
+          </CloseButton>
+        )}
+      </BannerWrapper>
+    ) : null
+  )
 }
 
-export default Healthy;
+export default HealthyComponent;

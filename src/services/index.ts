@@ -5,26 +5,25 @@ import { Handler } from '../typings/Handler';
 export const begin = async (
   apis: Api[],
   onError: Handler,
-  interval?: number,
-  onResponse?: Handler
+  interval: number = 30000,
+  onResponse: Handler | undefined = undefined
 ) => {
-  const currentInterval = interval ? interval : 30000;
 
   apis.forEach(async a => {
-    await makeCall(a, onError, onResponse || undefined);
+    await makeCall(a, onError, onResponse);
   });
 
   /** Set the timeout and do it again */
   setTimeout(
-    async () => await begin(apis, onError, currentInterval, onResponse || undefined),
-    currentInterval
+    async () => await begin(apis, onError, interval, onResponse),
+    interval
   );
 };
 
 /** Make the actual fetch and return a Response object */
 const makeCall = async (api: Api, onError: Handler, onResponse?: Handler) => {
   await fetch(api.endpoint)
-    .then(apiResponse => handleResponse(api, apiResponse, onError, onResponse || undefined))
+    .then(apiResponse => handleResponse(api, apiResponse, onError, onResponse))
     // tslint:disable-next-line
     .catch(error => console.log('unhandled', error));
 };

@@ -43,7 +43,7 @@ describe('src/components/Healthy', () => {
 
     describe('when the problemChild is not currently in state', () => {
       it('should add the faulty api into problemChildren', async () => {
-        const component = shallow<Healthy>(<Healthy {...props} />);
+        const component = shallow(<Healthy {...props} />);
         expect(component.state('problemChildren')).toEqual([]);
         await component.instance().handleError(api, response);
         expect(component.state('problemChildren')).toEqual([{ api, response }]);
@@ -52,7 +52,7 @@ describe('src/components/Healthy', () => {
 
     describe('when the problemChild is already in state', () => {
       it('should not duplicate the api in problemChildren', async () => {
-        const component = shallow<Healthy>(<Healthy {...props} />);
+        const component = shallow(<Healthy {...props} />);
         component.setState({ problemChildren: [{ api, response }] });
         await component.instance().handleError(api, response);
         expect(component.state('problemChildren')).toEqual([{ api, response }]);
@@ -61,7 +61,7 @@ describe('src/components/Healthy', () => {
 
     describe('when props.onError exists', () => {
       it('should call props.onError', async () => {
-        const component = shallow<Healthy>(<Healthy {...props} />);
+        const component = shallow(<Healthy {...props} />);
         await component.instance().handleError(api, response);
         expect(props.onError).toHaveBeenCalled();
       });
@@ -78,7 +78,7 @@ describe('src/components/Healthy', () => {
           },
         ],
       };
-      const component = shallow<Healthy>(<Healthy {...props} />);
+      const component = shallow(<Healthy {...props} />);
 
       component.setState({ hasError: true });
       expect(component.state('hasError')).toBeTruthy();
@@ -98,7 +98,7 @@ describe('src/components/Healthy', () => {
             },
           ],
         };
-        const component = shallow<Healthy>(<Healthy {...props} />);
+        const component = shallow(<Healthy {...props} />);
         expect(component.state('problemChildren')).toHaveLength(0);
         const result = component.instance().determineMessage();
         expect(result).toBe(undefined);
@@ -123,7 +123,7 @@ describe('src/components/Healthy', () => {
             onError: jest.fn(),
           };
 
-          const component = shallow<Healthy>(<Healthy {...props} />);
+          const component = shallow(<Healthy {...props} />);
           component.setState({
             problemChildren: [
               {
@@ -154,7 +154,7 @@ describe('src/components/Healthy', () => {
             onError: jest.fn(),
           };
 
-          const component = shallow<Healthy>(<Healthy {...props} />);
+          const component = shallow(<Healthy {...props} />);
           component.setState({
             problemChildren: [
               {
@@ -190,103 +190,13 @@ describe('src/components/Healthy', () => {
           onError: jest.fn(),
         };
 
-        const component = shallow<Healthy>(<Healthy {...props} />);
+        const component = shallow(<Healthy {...props} />);
         component.setState({
           problemChildren: [{ api, response }, { api: secondApi, response }],
         });
         expect(component.state('problemChildren')).toHaveLength(2);
         const result = component.instance().determineMessage();
         expect(result).toBe('We are currently experiencing issues with 2 services');
-      });
-    });
-  });
-
-  describe('render', () => {
-    describe('when there are no problemChildren', () => {
-      it('should match the snapshot', () => {
-        const props: HealthyProps = {
-          apis: [
-            {
-              endpoint: goodEndpoint,
-              name: 'Api',
-            },
-          ],
-        };
-        const component = shallow(<Healthy {...props} />);
-        expect(component).toMatchSnapshot();
-      });
-    });
-
-    describe('when there is one problemChild', () => {
-      describe('when no custom message is passed', () => {
-        it('should match the snapshot', () => {
-          const api: Api = {
-            endpoint: badEndpoint,            
-            name: 'Bad Api',
-          };
-          const response: Response = {
-            code: 404,
-            message: 'Not found',
-          };
-          const props: HealthyProps = {
-            apis: [api],
-          };
-          const component = shallow<Healthy>(<Healthy {...props} />);
-          component.setState({ problemChildren: [{ api, response }] });
-          expect(component).toMatchSnapshot();
-        });
-      });
-      describe('when there is a custom message is passed', () => {
-        it('should match the snapshot', () => {
-          const api: Api = {
-            endpoint: badEndpoint,
-            name: 'Bad Api',
-            message: 'Custom Message, here',
-          };
-          const response: Response = {
-            code: 404,
-            message: 'Not found',
-          };
-          const props: HealthyProps = {
-            apis: [api],
-          };
-          const component = shallow<Healthy>(<Healthy {...props} />);
-          component.setState({ problemChildren: [{ api, response }] });
-          expect(component).toMatchSnapshot();
-        });
-      });
-    });
-
-    describe('when there are multiple problemChildren', () => {
-      it('should match the snapshot', () => {
-        const api: Api = {
-          endpoint: badEndpoint,          
-          name: 'Bad Api',
-        };
-        const secondApi: Api = {
-          endpoint: badEndpoint,
-          name: 'Bad Api',
-        };
-        const thirdApi: Api = {
-          endpoint: badEndpoint,
-          name: 'Bad Api',
-        };
-        const response: Response = {
-          code: 404,
-          message: 'Not found',
-        };
-        const props: HealthyProps = {
-          apis: [api, secondApi, thirdApi],
-        };
-        const component = shallow<Healthy>(<Healthy {...props} />);
-        component.setState({
-          problemChildren: [
-            { api, response },
-            { api: secondApi, response },
-            { api: thirdApi, response },
-          ],
-        });
-        expect(component).toMatchSnapshot();
       });
     });
   });
