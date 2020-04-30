@@ -27,7 +27,8 @@ class StatusPage extends Component<StatusPageProps> {
  };
  
  
- public handleError = (api: Api, response: Response) => {
+ public handleResponse = (api: Api, response: Response) => {
+   console.log('handleResponse' + response);
    const apis = [...this.state.apis];
    const index = apis.findIndex(stateApi => stateApi.api === api);
    apis[index].response = response;
@@ -62,7 +63,7 @@ class StatusPage extends Component<StatusPageProps> {
      hasError: false,
    });
  
-   await begin(this.props.apis, this.handleError, this.props.interval, undefined);
+   await begin(this.props.apis, this.handleResponse, this.props.interval);
  };
  
  public render() {
