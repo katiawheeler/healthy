@@ -25,35 +25,60 @@ class StatusPage extends Component<StatusPageProps> {
    apis: [],
    hasError: false,
  };
- 
- 
- public handleResponse = (api: Api, response: Response) => {
-   console.log('handleResponse' + response);
-   const apis = [...this.state.apis];
-   const index = apis.findIndex(stateApi => stateApi.api === api);
-   apis[index].response = response;
-  
-   if (response.code == 200) {
-    apis[index].hasError = false;
-    let hasError = false;
-    apis.forEach(api => {
-     if (api.hasError) hasError = true;
-   });
- 
-   this.setState({
-     apis,
-     hasError: hasError,
-    });
-   } 
-   else {
-    apis[index].hasError = true;
-    
-    this.setState({
-       apis,
-       hasError: true,
-     });
-   }
+
+
+ public handleError = (api: Api, response: Response) => {
+  const apis = [...this.state.apis];
+  const index = apis.findIndex(stateApi => stateApi.api === api);
+  apis[index].hasError = true;
+  apis[index].response = response;
+
+  this.setState(
+    {
+      apis,
+      hasError: true
+    }
+  );
  };
+
+ public handleSuccess = (api: Api, response: Response) =>  {
+
+  const apis = [...this.state.apis];
+  const index = apis.findIndex(stateApi => stateApi.api === api);
+
+  apis[index].hasError = false;
+  apis[index].response = response;
+    
+    let hasError = false;
+    for(let i=0; i<apis.length;i++){
+      if(apis[i].hasError){
+        hasError=true;
+        break;
+      }
+    }
+    this.setState({
+      ...this.state,
+      apis,
+      hasError: hasError,
+    });
+ };
+
+ public handleDown = (api: Api) => {
+
+  const apis = [...this.state.apis];
+  const index = apis.findIndex(stateApi => stateApi.api.endpoint === api.endpoint);
+
+  apis[index].hasError = true;
+
+  let hasError = true;
+   
+  this.setState({
+    ...this.state,
+    apis,
+    hasError: hasError,
+  });
+
+}
  
  public componentDidMount = async () => {
    const apis = this.props.apis.map(api => ({ api, response: null, hasError: false }));
@@ -63,7 +88,7 @@ class StatusPage extends Component<StatusPageProps> {
      hasError: false,
    });
  
-   await begin(this.props.apis, this.handleResponse, this.props.interval);
+   await begin(this.props.apis, this.handleSuccess, this.handleError, this.handleDown, this.props.interval);
  };
  
  public render() {
@@ -71,12 +96,12 @@ class StatusPage extends Component<StatusPageProps> {
      <Container>
        <PageStatus hasError={this.state.hasError} />
        {this.state.apis.map((api, i) => (
-         <StatusRow
-           key={api.api.name + api.api.endpoint}
-           name={api.api.name}
-           hasError={api.hasError}
-           className={i === 0 ? 'first' : ''}
-         />
+          <StatusRow
+          key={api.api.name + api.api.endpoint}
+          name={api.api.name}
+          hasError={api.hasError}
+          className={i === 0 ? 'first' : ''}
+        />
        ))}
      </Container>
    );

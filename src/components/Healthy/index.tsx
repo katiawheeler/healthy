@@ -14,7 +14,9 @@ export interface HealthyProps {
   /** A callback to handle all responses that are not errors, in case
    * you want to handle different responses differently
    */
-  onResponse?: Handler;
+  onSuccess?: Handler;
+  /** A callback to handle all unreachable services */
+  onDown: Handler;
   /** CSS class names to assign to the banner, banner content, and close button */
   classes?: {
     banner?: string;
@@ -37,10 +39,10 @@ class Healthy extends React.Component<HealthyProps> {
   };
 
   public componentDidMount = async () => {
-    await begin(this.props.apis, this.handleError, this.props.interval, this.props.onResponse || undefined);
+    await begin(this.props.apis, this.props.onSuccess, this.handleError, this.props.onDown, this.props.interval);
   };
 
-  public handleError = (api: Api, response: Response) => {
+  public handleError = (api: Api, response: Response ) => {
     const problemChildren = this.state.problemChildren;
     if (problemChildren.find(item => item.api.endpoint === api.endpoint) === undefined) {
       problemChildren.push({ api, response });
