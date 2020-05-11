@@ -15,8 +15,6 @@ export interface HealthyProps {
    * you want to handle different responses differently
    */
   onSuccess?: Handler;
-  /** A callback to handle all unreachable services */
-  onDown: Handler;
   /** CSS class names to assign to the banner, banner content, and close button */
   classes?: {
     banner?: string;
@@ -39,7 +37,7 @@ class Healthy extends React.Component<HealthyProps> {
   };
 
   public componentDidMount = async () => {
-    await begin(this.props.apis, this.props.onSuccess, this.handleError, this.props.onDown, this.props.interval);
+    await begin(this.props.apis, this.props.onSuccess, this.handleError, this.props.interval);
   };
 
   public handleError = (api: Api, response: Response ) => {
