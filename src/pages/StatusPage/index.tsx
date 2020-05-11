@@ -29,7 +29,7 @@ class StatusPage extends Component<StatusPageProps> {
 
  public handleError = (api: Api, response: Response) => {
   const apis = [...this.state.apis];
-  const index = apis.findIndex(stateApi => stateApi.api === api);
+  const index = apis.findIndex(stateApi => stateApi.api.endpoint === api.endpoint);
   apis[index].hasError = true;
   apis[index].response = response;
 
@@ -44,7 +44,7 @@ class StatusPage extends Component<StatusPageProps> {
  public handleSuccess = (api: Api, response: Response) =>  {
 
   const apis = [...this.state.apis];
-  const index = apis.findIndex(stateApi => stateApi.api === api);
+  const index = apis.findIndex(stateApi => stateApi.api.endpoint === api.endpoint);
 
   apis[index].hasError = false;
   apis[index].response = response;
@@ -57,9 +57,8 @@ class StatusPage extends Component<StatusPageProps> {
       }
     }
     this.setState({
-      ...this.state,
       apis,
-      hasError: hasError,
+      hasError,
     });
  };
 
@@ -67,15 +66,11 @@ class StatusPage extends Component<StatusPageProps> {
 
   const apis = [...this.state.apis];
   const index = apis.findIndex(stateApi => stateApi.api.endpoint === api.endpoint);
-
   apis[index].hasError = true;
-
-  let hasError = true;
-   
+ 
   this.setState({
-    ...this.state,
     apis,
-    hasError: hasError,
+    hasError: true,
   });
 
 }
