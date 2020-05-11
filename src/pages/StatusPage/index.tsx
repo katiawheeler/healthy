@@ -62,7 +62,7 @@ class StatusPage extends Component<StatusPageProps> {
     });
  };
 
- public handleDown = (api: Api) => {
+ public handleApiDown = (api: Api) => {
 
   const apis = [...this.state.apis];
   const index = apis.findIndex(stateApi => stateApi.api.endpoint === api.endpoint);
@@ -83,7 +83,7 @@ class StatusPage extends Component<StatusPageProps> {
      hasError: false,
    });
  
-   await begin(this.props.apis, this.handleSuccess, this.handleError, this.handleDown, this.props.interval);
+   await begin(this.props.apis, this.handleSuccess, this.handleError, this.handleApiDown, this.props.interval);
  };
  
  public render() {

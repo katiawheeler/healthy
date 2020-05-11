@@ -2,25 +2,25 @@ import { Api, Response as ApiResponse } from '../typings/Api';
 import { Handler } from '../typings/Handler';
  
 /** Begins the chain of API calls */
-export const begin = async (apis: Api[], onSuccess: Handler, onError:Handler, onDown:Handler, interval?: number) => {
+export const begin = async (apis: Api[], onSuccess: Handler, onError:Handler, onApiDown:Handler, interval?: number) => {
  const currentInterval = interval ? interval : 30000;
  
  apis.forEach(async a => {
-   await makeCall(a, onSuccess, onError, onDown);
+   await makeCall(a, onSuccess, onError, onApiDown);
  });
  
  /** Set the timeout and do it again */
- setTimeout(async () => await begin(apis, onSuccess, onError, onDown, currentInterval), currentInterval);
+ setTimeout(async () => await begin(apis, onSuccess, onError, onApiDown, currentInterval), currentInterval);
 };
  
 /** Make the actual fetch and return a Response object */
-const makeCall = async (api: Api, onSuccess: Handler, onError:Handler, onDown:Handler) => {
+const makeCall = async (api: Api, onSuccess: Handler, onError:Handler, onApiDown:Handler) => {
 
 
  await fetch(api.endpoint)
    .then(apiResponse => handleResponse(api, apiResponse, onSuccess, onError))
    // tslint:disable-next-line
-   .catch(error => handleDown(api, onDown));
+   .catch(error => handleApiDown(api, onApiDown));
 };
  
 /**
@@ -45,8 +45,8 @@ const handleResponse = (api: Api, response: Response, onSuccess: Handler, onErro
     226 == apiResponse.code)  ? onSuccess(api, apiResponse) : onError(api, apiResponse);
 };
 
-const handleDown = (api: Api, onDown: Handler) => {
-  onDown(api);
+const handleApiDown = (api: Api, onApiDown: Handler) => {
+  onApiDown(api);
 }
  
-export default { begin, makeCall, handleResponse, handleDown };
+export default { begin, makeCall, handleResponse, handleApiDown };
