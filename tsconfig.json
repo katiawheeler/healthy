@@ -7,11 +7,7 @@
     "skipLibCheck": true,
     "allowJs": true,
     "jsx": "preserve",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "es2015"
-    ],
+    "lib": ["dom", "dom.iterable", "es2015"],
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true,
@@ -20,7 +16,5 @@
     "isolatedModules": true,
     "noEmit": true
   },
-  "include": [
-    "src"
-  ]
+  "include": ["src"]
 }

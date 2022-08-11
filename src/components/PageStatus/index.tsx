@@ -1,14 +1,44 @@
-import React from 'react';
-import { Banner } from './PageStatus.styles';
+import React from 'react'
+import {css, cx} from '@emotion/css'
+import {RowMessages} from '../../types'
+
+const DEFAULT_MESSAGES = {
+  ERROR: 'We are currently experiencing outages with our services. Stay tuned!',
+  OPERATIONAL: 'All services operational!',
+}
 
 export interface PageStatusProps {
-    hasError: boolean
+  hasError: boolean
+  messages?: RowMessages
 }
 
-function PageStatus({ hasError }: PageStatusProps) {
-    return <Banner className={hasError ? 'error' : ''} data-testid="banner">
-        {hasError ? 'We are currently experiencing outages with our services. Stay tuned!' : 'All services operational!'}
-    </Banner>
+function PageStatus({hasError, messages}: PageStatusProps) {
+  const errorMessage = messages?.error || DEFAULT_MESSAGES.ERROR
+  const operationalMessage =
+    messages?.operational || DEFAULT_MESSAGES.OPERATIONAL
+
+  return (
+    <div
+      className={cx(bannerStyles, hasError ? 'error' : undefined)}
+      data-testid="banner"
+    >
+      {hasError ? errorMessage : operationalMessage}
+    </div>
+  )
 }
 
-export default PageStatus;
+const bannerStyles = css({
+  padding: '15px',
+  borderRadius: '4px',
+  fontSize: '20px',
+  fontFamily: 'inherit',
+  backgroundColor: '#2ecc71',
+  color: 'white',
+  marginBottom: '60px',
+
+  '&.error': {
+    backgroundColor: '#ef5350',
+  },
+})
+
+export default PageStatus
