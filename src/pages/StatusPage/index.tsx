@@ -29,15 +29,13 @@ function StatusPage({config}: StatusPageProps) {
         messages={config.messages?.statusPage}
       />
       {config.apis.map((api, i) => {
-        const apiHasError = apisWithErrors.find(
-          er => er.api.endpoint === api.endpoint
-        )
+        const apiHasError = apisWithErrors.has(api)
 
         return (
           <StatusRow
             key={api.name + api.endpoint}
             name={api.name}
-            hasError={apiHasError?.hasError || false}
+            hasError={apiHasError}
             className={i === 0 ? 'first' : ''}
             messages={config.messages?.row}
           />

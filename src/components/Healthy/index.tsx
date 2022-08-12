@@ -1,8 +1,8 @@
-import React, {useState, useCallback, useMemo} from 'react'
+import React, {useState, useCallback, useMemo, useEffect} from 'react'
 import {css, cx} from '@emotion/css'
 
 import useHealthCheck from '../../hooks/useHealthCheck'
-import {Api, ApiResponse, BannerMessages} from '../../types'
+import {Api, ApiResponse, BannerMessages } from '../../types'
 
 interface Props {
   config: HealthyConfig
@@ -35,13 +35,17 @@ export function Healthy({config}: Props) {
     closeable = false,
     messages,
   } = config
+  const [showBanner, setShowBanner] = useState(false)
 
   const {pageHasError, apisWithErrors} = useHealthCheck({
     apis,
     interval,
     onError,
   })
-  const [showBanner, setShowBanner] = useState(pageHasError)
+
+  useEffect(() => {
+    setShowBanner(pageHasError)
+  }, [pageHasError])
 
   const closeButton = useMemo(
     () =>
@@ -57,11 +61,11 @@ export function Healthy({config}: Props) {
   )
 
   const determineMessage = useCallback(() => {
-    if (!apisWithErrors.length) return
+    if (!apisWithErrors.size) return
 
     // single issue
-    if (apisWithErrors.length === 1) {
-      const downApi = apisWithErrors[0].api
+    if (apisWithErrors.size === 1) {
+      const downApi = apisWithErrors.values().next().value
       const defaultMessage = `We are currently experiencing issues with our ${downApi.name} service`
 
       return messages?.singleError || defaultMessage

@@ -1,4 +1,6 @@
-import {useMemo, useState} from 'react'
+import {useEffect, useMemo, useState} from 'react'
+import { useSet } from 'react-use'
+
 import {Api, ApiResponse} from '../types'
 import useInterval from './useInterval'
 
@@ -16,38 +18,35 @@ const useHealthCheck = ({
   onError = noop,
 }: HealthCheck) => {
   const [pageHasError, setPageHasError] = useState<boolean>(false)
-  const [apisWithErrors, setApisWithErrors] = useState<ApiResponse[]>([])
+  const [apisWithErrors, { add, has, remove }] = useSet<Api>(new Set())
 
   useInterval(async () => {
     await Promise.resolve(
       apis.forEach(async api => {
         await fetch(api.endpoint).then(response => {
-          const cleanedApiList = apisWithErrors.filter(
-            apiWithError => apiWithError.api.endpoint !== api.endpoint
-          )
-
-          if (response.ok) {
-            // remove api from list of apis with errors if it's back up
-            setApisWithErrors(cleanedApiList)
-
-            // if it was the only api with an error, set pageHasError to false
-            if (cleanedApiList.length === 0) {
-              setPageHasError(false)
-            }
-
-            return
+          // if response ok, remove from apisWithErrors
+          if(response.ok) {
+            remove(api)
           }
-
-          const faultyApi = {api, response, hasError: true}
-          setApisWithErrors([...cleanedApiList, faultyApi])
-          onError(faultyApi)
-          setPageHasError(true)
+          // if not, add to apisWithErrors if it doesn't already exist
+          else if(!has(api)) {
+            add(api)
+            onError({api, response, hasError: true})
+          }
         })
       })
     )
   }, interval)
 
-  return useMemo(() => ({pageHasError, apisWithErrors}), [
+  useEffect(() => {
+    if(apisWithErrors.size > 0) {
+      setPageHasError(true)
+    } else {
+      setPageHasError(false)
+    }
+  }, [apisWithErrors])
+
+  return useMemo(() => ({pageHasError, apisWithErrors }), [
     pageHasError,
     apisWithErrors,
   ])

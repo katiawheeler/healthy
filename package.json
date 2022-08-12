@@ -24,7 +24,8 @@
     "@emotion/css": "^11.10.0",
     "lodash.isequal": "^4.5.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-use": "^17.4.0"
   },
   "scripts": {
     "analyze": "source-map-explorer 'dist/static/js/*.js'",
