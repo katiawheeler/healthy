@@ -53,6 +53,7 @@ export function Healthy({config}: Props) {
         <button
           className={cx(closeButtonStyles, classes?.closeButton)}
           onClick={() => setShowBanner(false)}
+          data-testid="CLOSE_BUTTON"
         >
           &times;
         </button>
@@ -78,10 +79,12 @@ export function Healthy({config}: Props) {
     )
   }, [messages, apisWithErrors])
 
+  const bannerMessage = determineMessage()
+
   return showBanner ? (
-    <div className={cx(bannerWrapperStyles, classes?.banner)}>
+    <div className={cx(bannerWrapperStyles, classes?.banner)} data-testid="BANNER">
       <div className={cx(bannerContentStyles, classes?.content)}>
-        <span>{determineMessage()}</span>
+        <span>{bannerMessage}</span>
       </div>
       {closeButton}
     </div>

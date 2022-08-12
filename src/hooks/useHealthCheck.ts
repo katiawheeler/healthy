@@ -1,10 +1,8 @@
-import {useEffect, useMemo, useState} from 'react'
+import {useCallback, useEffect, useMemo, useState} from 'react'
 import { useSet } from 'react-use'
 
 import {Api, ApiResponse} from '../types'
 import useInterval from './useInterval'
-
-const noop = () => {}
 
 interface HealthCheck {
   apis: Api[]
@@ -15,28 +13,25 @@ interface HealthCheck {
 const useHealthCheck = ({
   apis,
   interval = 30000,
-  onError = noop,
+  onError,
 }: HealthCheck) => {
   const [pageHasError, setPageHasError] = useState<boolean>(false)
   const [apisWithErrors, { add, has, remove }] = useSet<Api>(new Set())
 
-  useInterval(async () => {
-    await Promise.resolve(
-      apis.forEach(async api => {
-        await fetch(api.endpoint).then(response => {
-          // if response ok, remove from apisWithErrors
-          if(response.ok) {
-            remove(api)
-          }
-          // if not, add to apisWithErrors if it doesn't already exist
-          else if(!has(api)) {
-            add(api)
-            onError({api, response, hasError: true})
-          }
-        })
+  const fetchData = useCallback(async () => {
+    apis.forEach(api => {
+      makeCall(api).then(response => {
+        if(response.ok && has(api)) {
+          remove(api)
+        } else if(!response.ok && !has(api)) {
+          add(api)
+          onError?.({api, response})
+        }
       })
-    )
-  }, interval)
+    })
+}, [apis, onError, add, has, remove])
+
+  useInterval(fetchData, interval)
 
   useEffect(() => {
     if(apisWithErrors.size > 0) {
@@ -50,6 +45,10 @@ const useHealthCheck = ({
     pageHasError,
     apisWithErrors,
   ])
+}
+
+const makeCall = async (api: Api) => {
+  return await fetch(api.endpoint)
 }
 
 export default useHealthCheck

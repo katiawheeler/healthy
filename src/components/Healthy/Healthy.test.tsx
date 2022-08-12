@@ -1,12 +1,11 @@
 import React from 'react'
-import {render, waitFor, cleanup} from '@testing-library/react'
+import {render, waitFor, cleanup, screen} from '@testing-library/react'
 import Healthy, {Props} from '.'
 
 const goodEndpoint = 'https://httpstat.us/200'
 const badEndpoint = 'https://httpstat.us/404'
 
-afterEach(cleanup)
-
+const waitForOptions = { interval: 1500 }
 describe('src/components/Healthy', () => {
   const goodConfig: Props['config'] = {
     apis: [
@@ -15,7 +14,7 @@ describe('src/components/Healthy', () => {
         name: 'Test Api',
       },
     ],
-    interval: 1,
+    interval: 500,
   }
 
   const badConfig: Props['config'] = {
@@ -25,36 +24,46 @@ describe('src/components/Healthy', () => {
         name: 'Bad Api',
       },
     ],
+    interval: 500,
   }
 
-  describe('closeable', () => {
-    it('should close when clicked', async () => {
-      const {getByTestId} = render(<Healthy config={{...badConfig, closeable: true}} />)
-      const btn = await waitFor(() => getByTestId('close'))
-
-      expect(btn).toBeInTheDocument()
-      btn.click()
-      expect(btn).not.toBeInTheDocument()
+  describe('<Healthy />', () => {
+    afterEach(() => {
+      jest.restoreAllMocks()
+      cleanup()
     })
-  })
 
-  describe('onError', () => {
-    it('should call the prop onError', async () => {
+    it('should not render the banner if no issues are found', async () => {
+      render(<Healthy config={goodConfig} />)
+
+      await waitFor(() => {
+        expect(screen.queryByTestId('BANNER')).toBeNull()
+      }, waitForOptions)
+    })
+
+    it('should render the banner if issues are found', async () => {
+      render(<Healthy config={badConfig} />)
+
+      await waitFor(() => {
+        expect(screen.queryByTestId('BANNER')).not.toBeNull()
+      }, waitForOptions)
+    })
+
+    it('should render a close button if closeable', async () => {
+      render(<Healthy config={{...badConfig, closeable: true}} />)
+
+      await waitFor(() => {
+        expect(screen.queryByTestId('CLOSE_BUTTON')).not.toBeNull()
+      }, waitForOptions)
+    })
+
+    it.only('should call onError with the correct api if an api has an error', async () => {
       const onErrorSpy = jest.fn()
       render(<Healthy config={{...badConfig, onError: onErrorSpy}} />)
 
-      const expected = [
-        {
-          endpoint: 'https://httpstat.us/404',
-          name: 'Bad Api',
-        },
-        {
-          code: 404,
-          message: 'Not Found',
-        },
-      ]
-
-      await waitFor(() => expect(onErrorSpy).toHaveBeenCalledWith(...expected))
+      await waitFor(() => {
+        expect(onErrorSpy).toHaveBeenCalledTimes(1)
+      }, waitForOptions)
     })
   })
 })
