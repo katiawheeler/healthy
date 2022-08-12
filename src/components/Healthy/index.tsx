@@ -4,7 +4,7 @@ import {css, cx} from '@emotion/css'
 import useHealthCheck from '../../hooks/useHealthCheck'
 import {Api, ApiResponse, BannerMessages } from '../../types'
 
-interface Props {
+export interface Props {
   config: HealthyConfig
 }
 

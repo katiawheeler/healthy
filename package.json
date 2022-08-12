@@ -31,7 +31,7 @@
     "analyze": "source-map-explorer 'dist/static/js/*.js'",
     "check-types": "tsc",
     "build": "rimraf dist && rollup -c",
-    "test": "react-scripts test --watch --collectCoverage --env=jest-environment-jsdom-sixteen",
+    "test": "react-scripts test --watch",
     "eject": "react-scripts eject",
     "format": "prettier --write \"src/**/*.ts\" \"src/**/*.js\"",
     "lint": "tslint -p tsconfig.json",
