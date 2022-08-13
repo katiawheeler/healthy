@@ -1,32 +1,21 @@
 import React from 'react'
 import {render, waitFor, cleanup, screen} from '@testing-library/react'
-import Healthy, {Props} from '.'
+import Healthy from '../components/Healthy'
+import constants from './constants'
 
-const goodEndpoint = 'https://httpstat.us/200'
-const badEndpoint = 'https://httpstat.us/404'
+const {goodApis, badApis, waitForOptions} = constants
 
-const waitForOptions = { interval: 1500 }
+const goodConfig = {
+  apis: goodApis,
+  interval: 100
+}
+
+const badConfig = {
+  apis: badApis,
+  interval: 100
+}
+
 describe('src/components/Healthy', () => {
-  const goodConfig: Props['config'] = {
-    apis: [
-      {
-        endpoint: goodEndpoint,
-        name: 'Test Api',
-      },
-    ],
-    interval: 500,
-  }
-
-  const badConfig: Props['config'] = {
-    apis: [
-      {
-        endpoint: badEndpoint,
-        name: 'Bad Api',
-      },
-    ],
-    interval: 500,
-  }
-
   describe('<Healthy />', () => {
     afterEach(() => {
       jest.restoreAllMocks()
@@ -57,9 +46,9 @@ describe('src/components/Healthy', () => {
       }, waitForOptions)
     })
 
-    it.only('should call onError with the correct api if an api has an error', async () => {
+    it('should call onError with the correct api if an api has an error', async () => {
       const onErrorSpy = jest.fn()
-      render(<Healthy config={{...badConfig, onError: onErrorSpy}} />)
+      render(<Healthy config={{apis: [badApis[0], goodApis[0]], interval: 100, onError: onErrorSpy}} />)
 
       await waitFor(() => {
         expect(onErrorSpy).toHaveBeenCalledTimes(1)
