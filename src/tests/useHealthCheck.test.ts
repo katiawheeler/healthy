@@ -36,8 +36,22 @@ describe('useHealthCheck', () => {
       await waitForNextUpdate()
 
       expect(result.current.pageHasError).toBeTruthy()
-      expect(result.current.apisWithErrors.size).toBe(2)
+      expect(result.current.apisWithErrors.length).toBe(2)
       expect(onErrorSpy).toHaveBeenCalledTimes(2)
+
+      global.fetch = jest.fn(() =>
+        Promise.resolve(
+          new Response('', {
+            status: 200,
+          })
+        )
+      )
+
+      jest.advanceTimersToNextTimer()
+      await waitForNextUpdate()
+
+      expect(result.current.pageHasError).toBeFalsy()
+      expect(result.current.apisWithErrors.length).toBe(0)
     })
   })
 })

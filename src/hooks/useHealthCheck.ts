@@ -11,7 +11,7 @@ export type HealthCheckProps = {
 }
 
 export type HealthCheckReturn = {
-  apisWithErrors: Set<Api>
+  apisWithErrors: Api[]
   pageHasError: boolean
 }
 
@@ -20,7 +20,6 @@ export const useHealthCheck = ({
   interval = 30000,
   onError,
 }: HealthCheckProps): HealthCheckReturn => {
-  const [pageHasError, setPageHasError] = useState<boolean>(false)
   const [apisWithErrors, {add, has, remove}] = useSet<Api>(new Set())
 
   const fetchData = useCallback(async () => {
@@ -38,18 +37,13 @@ export const useHealthCheck = ({
 
   useInterval(fetchData, interval)
 
-  useEffect(() => {
-    if (apisWithErrors.size > 0) {
-      setPageHasError(true)
-    } else {
-      setPageHasError(false)
-    }
-  }, [apisWithErrors])
-
-  return useMemo(() => ({pageHasError, apisWithErrors}), [
-    pageHasError,
-    apisWithErrors,
-  ])
+  return useMemo(
+    () => ({
+      pageHasError: apisWithErrors.size > 0,
+      apisWithErrors: Array.from(apisWithErrors),
+    }),
+    [apisWithErrors]
+  )
 }
 
 const makeCall = async (api: Api) => {
