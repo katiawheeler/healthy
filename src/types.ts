@@ -3,8 +3,6 @@ export interface Api {
   name: string
   /** Endpoint of the API to ping */
   endpoint: string
-  /** Custom message to be displayed when there's an error */
-  message?: string
 }
 
 export interface Response {
@@ -15,7 +13,6 @@ export interface Response {
 export interface ApiResponse {
   api: Api
   response?: Response
-  hasError?: boolean
 }
 
 export interface BannerMessages {

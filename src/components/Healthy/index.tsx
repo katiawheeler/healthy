@@ -62,10 +62,10 @@ export function Healthy({config}: HealthyProps) {
   )
 
   const determineMessage = useCallback(() => {
-    if (!apisWithErrors.size) return
+    if (!apisWithErrors.length) return
 
     // single issue
-    if (apisWithErrors.size === 1) {
+    if (apisWithErrors.length === 1) {
       const downApi = apisWithErrors.values().next().value
       const defaultMessage = `We are currently experiencing issues with our ${downApi.name} service`
 

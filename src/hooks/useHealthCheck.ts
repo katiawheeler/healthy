@@ -1,10 +1,10 @@
-import {useCallback, useEffect, useMemo, useState} from 'react'
+import {useCallback, useMemo} from 'react'
 import {useSet} from 'react-use'
 
 import {Api, ApiResponse} from '../types'
 import useInterval from './useInterval'
 
-export type HealthCheckProps = {
+export type HealthCheckConfig = {
   apis: Api[]
   interval?: number
   onError?: (api: ApiResponse) => void
@@ -19,7 +19,7 @@ export const useHealthCheck = ({
   apis,
   interval = 30000,
   onError,
-}: HealthCheckProps): HealthCheckReturn => {
+}: HealthCheckConfig): HealthCheckReturn => {
   const [apisWithErrors, {add, has, remove}] = useSet<Api>(new Set())
 
   const fetchData = useCallback(async () => {

@@ -16,11 +16,12 @@ export type StatusPageProps = {
 }
 
 export function StatusPage({config}: StatusPageProps) {
-  const {apisWithErrors, pageHasError} = useHealthCheck({
+  const {apisWithErrors: apiWithErrorsArray, pageHasError} = useHealthCheck({
     apis: config.apis,
     interval: config.interval,
     onError: config.onError,
   })
+  const apisWithErrors = new Set(apiWithErrorsArray)
 
   return (
     <div className={containerStyles}>
