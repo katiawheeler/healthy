@@ -13,7 +13,7 @@ describe('src/components/StatusRow', () => {
 
     const {getByTestId} = render(<StatusRow {...props} />)
     const info = getByTestId('row').firstElementChild
-    expect(info!.textContent).toBe('Api')
+    expect(info!).toHaveTextContent('Api')
   })
 
   describe('when there is no error', () => {

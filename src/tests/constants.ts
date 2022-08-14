@@ -24,12 +24,10 @@ const badApis: Api[] = [
     name: 'Bad API 2',
   },
 ]
-const BadResponse = new Response('Error', {status: 500})
 const constants = {
   waitForOptions,
   goodApis,
   badApis,
-  BadResponse,
 }
 
 export default constants

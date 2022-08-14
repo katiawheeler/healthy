@@ -28,7 +28,7 @@ export interface RowMessages {
   operational?: string
 }
 
-export interface StatusPageMessages extends RowMessages {}
+export type StatusPageMessages = RowMessages
 
 export interface Messages {
   banner?: BannerMessages

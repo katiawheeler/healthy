@@ -7,12 +7,12 @@ const DEFAULT_MESSAGES = {
   OPERATIONAL: 'All services operational!',
 }
 
-export interface PageStatusProps {
+export type PageStatusProps = {
   hasError: boolean
   messages?: RowMessages
 }
 
-function PageStatus({hasError, messages}: PageStatusProps) {
+export function PageStatus({hasError, messages}: PageStatusProps) {
   const errorMessage = messages?.error || DEFAULT_MESSAGES.ERROR
   const operationalMessage =
     messages?.operational || DEFAULT_MESSAGES.OPERATIONAL

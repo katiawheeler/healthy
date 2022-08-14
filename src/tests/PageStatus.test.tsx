@@ -9,7 +9,7 @@ describe('src/components/PageStatus', () => {
         const {getByTestId} = render(<PageStatus hasError={false} />)
         const banner = getByTestId('banner')
         expect(banner).toHaveTextContent('All services operational!')
-        expect(banner.classList).not.toContain('error')
+        expect(banner).not.toHaveClass('error')
       })
     })
 
@@ -20,7 +20,7 @@ describe('src/components/PageStatus', () => {
         expect(banner).toHaveTextContent(
           'We are currently experiencing outages with our services. Stay tuned!'
         )
-        expect(banner.classList).toContain('error')
+        expect(banner).toHaveClass('error')
       })
     })
   })

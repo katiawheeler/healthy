@@ -7,12 +7,12 @@ const {goodApis, badApis, waitForOptions} = constants
 
 const goodConfig = {
   apis: goodApis,
-  interval: 100
+  interval: 100,
 }
 
 const badConfig = {
   apis: badApis,
-  interval: 100
+  interval: 100,
 }
 
 describe('src/components/Healthy', () => {
@@ -26,7 +26,7 @@ describe('src/components/Healthy', () => {
       render(<Healthy config={goodConfig} />)
 
       await waitFor(() => {
-        expect(screen.queryByTestId('BANNER')).toBeNull()
+        expect(screen.queryByTestId('BANNER')).not.toBeInTheDocument()
       }, waitForOptions)
     })
 
@@ -34,7 +34,7 @@ describe('src/components/Healthy', () => {
       render(<Healthy config={badConfig} />)
 
       await waitFor(() => {
-        expect(screen.queryByTestId('BANNER')).not.toBeNull()
+        expect(screen.queryByTestId('BANNER')).toBeInTheDocument()
       }, waitForOptions)
     })
 
@@ -42,13 +42,21 @@ describe('src/components/Healthy', () => {
       render(<Healthy config={{...badConfig, closeable: true}} />)
 
       await waitFor(() => {
-        expect(screen.queryByTestId('CLOSE_BUTTON')).not.toBeNull()
+        expect(screen.queryByTestId('CLOSE_BUTTON')).toBeInTheDocument()
       }, waitForOptions)
     })
 
     it('should call onError with the correct api if an api has an error', async () => {
       const onErrorSpy = jest.fn()
-      render(<Healthy config={{apis: [badApis[0], goodApis[0]], interval: 100, onError: onErrorSpy}} />)
+      render(
+        <Healthy
+          config={{
+            apis: [badApis[0], goodApis[0]],
+            interval: 100,
+            onError: onErrorSpy,
+          }}
+        />
+      )
 
       await waitFor(() => {
         expect(onErrorSpy).toHaveBeenCalledTimes(1)

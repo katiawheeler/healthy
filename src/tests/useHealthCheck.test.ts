@@ -1,10 +1,8 @@
-import {waitFor} from '@testing-library/react'
 import {renderHook} from '@testing-library/react-hooks'
-import {act} from 'react-dom/test-utils'
-import useHealthCheck, {HealthCheckReturn} from '../hooks/useHealthCheck'
+import {useHealthCheck} from '../hooks/useHealthCheck'
 import constants from './constants'
 
-const {waitForOptions, badApis, goodApis, BadResponse} = constants
+const {badApis} = constants
 
 jest.useFakeTimers()
 describe('useHealthCheck', () => {

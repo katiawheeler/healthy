@@ -1,21 +1,21 @@
 import {css} from '@emotion/css'
 import React from 'react'
 import {PageStatus, StatusRow} from '../../components'
-import useHealthCheck from '../../hooks/useHealthCheck'
+import {useHealthCheck} from '../../hooks/useHealthCheck'
 import {Api, ApiResponse, Messages} from '../../types'
 
-interface Config {
+export type StatusPageConfig = {
   apis: Api[]
   interval?: number
   messages?: Pick<Messages, 'row' | 'statusPage'>
   onError?: (api: ApiResponse) => void
 }
 
-interface StatusPageProps {
-  config: Config
+export type StatusPageProps = {
+  config: StatusPageConfig
 }
 
-function StatusPage({config}: StatusPageProps) {
+export function StatusPage({config}: StatusPageProps) {
   const {apisWithErrors, pageHasError} = useHealthCheck({
     apis: config.apis,
     interval: config.interval,

@@ -1,10 +1,10 @@
 import React, {useState, useCallback, useMemo, useEffect} from 'react'
 import {css, cx} from '@emotion/css'
 
-import useHealthCheck from '../../hooks/useHealthCheck'
-import {Api, ApiResponse, BannerMessages } from '../../types'
+import {useHealthCheck} from '../../hooks/useHealthCheck'
+import {Api, ApiResponse, BannerMessages} from '../../types'
 
-export interface Props {
+export type HealthyProps = {
   config: HealthyConfig
 }
 
@@ -26,7 +26,7 @@ export type HealthyConfig = {
   closeable?: boolean
 }
 
-export function Healthy({config}: Props) {
+export function Healthy({config}: HealthyProps) {
   const {
     apis,
     onError,
@@ -82,7 +82,10 @@ export function Healthy({config}: Props) {
   const bannerMessage = determineMessage()
 
   return showBanner ? (
-    <div className={cx(bannerWrapperStyles, classes?.banner)} data-testid="BANNER">
+    <div
+      className={cx(bannerWrapperStyles, classes?.banner)}
+      data-testid="BANNER"
+    >
       <div className={cx(bannerContentStyles, classes?.content)}>
         <span>{bannerMessage}</span>
       </div>

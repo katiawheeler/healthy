@@ -6,14 +6,20 @@ const DEFAULT_MESSAGES = {
   ERROR: 'Service Interruption',
   OPERATIONAL: 'Operational',
 }
-export interface StatusRowProps {
+
+export type StatusRowProps = {
   name: string
   hasError: boolean
   className?: string
   messages?: RowMessages
 }
 
-function StatusRow({name, hasError, className = '', messages}: StatusRowProps) {
+export function StatusRow({
+  name,
+  hasError,
+  className = '',
+  messages,
+}: StatusRowProps) {
   const errorMessage = messages?.error || DEFAULT_MESSAGES.ERROR
   const operationalMessage =
     messages?.operational || DEFAULT_MESSAGES.OPERATIONAL

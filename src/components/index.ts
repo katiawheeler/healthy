@@ -1,3 +1,5 @@
-export { default as Healthy } from './Healthy';
-export { default as PageStatus } from './PageStatus';
-export { default as StatusRow } from './StatusRow';
+import {Healthy} from './Healthy'
+import {PageStatus} from './PageStatus'
+import {StatusRow} from './StatusRow'
+
+export {Healthy, PageStatus, StatusRow}

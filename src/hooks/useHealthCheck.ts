@@ -1,26 +1,25 @@
-import {Console} from 'console'
 import {useCallback, useEffect, useMemo, useState} from 'react'
 import {useSet} from 'react-use'
 
 import {Api, ApiResponse} from '../types'
 import useInterval from './useInterval'
 
-interface HealthCheck {
+export type HealthCheckProps = {
   apis: Api[]
   interval?: number
   onError?: (api: ApiResponse) => void
 }
 
-export interface HealthCheckReturn {
+export type HealthCheckReturn = {
   apisWithErrors: Set<Api>
   pageHasError: boolean
 }
 
-const useHealthCheck = ({
+export const useHealthCheck = ({
   apis,
   interval = 30000,
   onError,
-}: HealthCheck): HealthCheckReturn => {
+}: HealthCheckProps): HealthCheckReturn => {
   const [pageHasError, setPageHasError] = useState<boolean>(false)
   const [apisWithErrors, {add, has, remove}] = useSet<Api>(new Set())
 
@@ -54,7 +53,7 @@ const useHealthCheck = ({
 }
 
 const makeCall = async (api: Api) => {
-  return await fetch(api.endpoint)
+  return fetch(api.endpoint)
 }
 
 export default useHealthCheck
