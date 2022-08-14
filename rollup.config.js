@@ -1,66 +1,42 @@
-// /* eslint-disable import/no-anonymous-default-export */
-// import resolve from '@rollup/plugin-node-resolve'
-// import {babel} from '@rollup/plugin-babel'
-// import commonjs from '@rollup/plugin-commonjs'
-
-// const extensions = ['.js', '.jsx', '.ts', '.tsx']
-
-// const config = {
-//   input: './src/index.ts',
-
-//   // Specify here external modules which you don't want to include in your bundle (for instance: 'lodash', 'moment' etc.)
-//   // https://rollupjs.org/guide/en#external-e-external
-//   external: ['@emotion/core', '@emotion/styled', 'react'],
-
-//   plugins: [
-//     // Allows node_modules resolution
-//     resolve({extensions}),
-
-//     // Allow bundling cjs modules. Rollup doesn't understand cjs
-//     commonjs(),
-
-//     // Transform files
-//     babel({
-//       extensions,
-//       include: ['src/**/*'],
-//       exclude: ['src/setupTests.js', 'src/tests/**/*'],
-//       babelHelpers: 'bundled',
-//     }),
-//   ],
-
-//   output: {dir: 'dist', format: 'cjs'},
-// }
-
-// export default config
-
-import babel from '@rollup/plugin-babel'
+import {nodeResolve} from '@rollup/plugin-node-resolve'
 import commonjs from '@rollup/plugin-commonjs'
-import resolve from '@rollup/plugin-node-resolve'
-
-const extensions = ['.js', '.jsx', '.ts', '.tsx']
-
-const formats = ['esm', 'umd']
-
-const plugins = [
-  babel({extensions, exclude: 'node_modules/**', babelHelpers: 'inline'}),
-  resolve({extensions}),
-  commonjs(),
-]
+import babel from '@rollup/plugin-babel'
+import typescript from '@rollup/plugin-typescript'
+import externals from 'rollup-plugin-node-externals'
+import del from 'rollup-plugin-delete'
+import pkg from './package.json'
+import dts from 'rollup-plugin-dts'
 
 export default [
   {
-    input: 'src/index.ts',
-    external: ['react', 'react-dom'],
-    plugins,
-    output: formats.map(format => ({
-      file: `dist/browser.${format}.js`,
-      format,
-      sourcemap: true,
-      name: 'react-healthy',
-      globals: {
-        react: 'React',
-        'react-dom': 'ReactDOM',
-      },
-    })),
+    input: './src/index.ts',
+    plugins: [
+      // Delete existing build files.
+      del({targets: 'dist/*'}),
+      // Leave out third-party dependencies (listed under `package.json`'s `dependencies` option) from the bundled outputs. For example, this library hosts components written with React. We can assume that developers using this library will already have React imported in their applications. And so, why include React in the bundled output and add unnecessary bloat?
+      externals({deps: true}),
+      // Find third-party modules within `node_modules` with any one of the following file extensions: `.js`, `.ts` and `.tsx`.
+      nodeResolve({
+        extensions: ['.js', '.ts', '.tsx'],
+      }),
+      // Convert CommonJS modules into ES modules.
+      commonjs(),
+      // Compile the library's code into a format that is consumable by a wider set of browsers. The library's code lives inside `.js`, `.jsx`, `.ts` and `.tsx` files. Do not compile any files from `node_modules`. The `runtime` helper makes Babel's injected helper code reusable for all modules, which greatly reduces bundle size.
+      babel({
+        babelHelpers: 'inline',
+        exclude: ['**/node_modules/**', 'src/tests/**/*'],
+        extensions: ['.js', '.jsx', '.ts', '.tsx'],
+      }),
+      typescript({
+        tsconfig: './tsconfig.build.json',
+        // https://github.com/rollup/plugins/issues/272
+        noEmitOnError: false,
+      }),
+      dts(),
+    ],
+    output: [
+      {file: pkg.main, format: 'cjs'},
+      {file: pkg.module, format: 'es'},
+    ],
   },
 ]

@@ -1,7 +1,5 @@
 export interface Api {
-  /** Name of the API - to be displayed in the banner */
   name: string
-  /** Endpoint of the API to ping */
   endpoint: string
 }
 
