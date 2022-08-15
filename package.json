@@ -1,6 +1,6 @@
 {
   "name": "react-healthy",
-  "version": "2.0.0-beta.0",
+  "version": "2.0.0-beta.1",
   "description": "Incrementally check and alert your users to the health of your APIs",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
