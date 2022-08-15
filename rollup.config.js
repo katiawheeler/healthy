@@ -1,38 +1,39 @@
-import {nodeResolve} from '@rollup/plugin-node-resolve'
+import resolve from '@rollup/plugin-node-resolve'
 import commonjs from '@rollup/plugin-commonjs'
-import babel from '@rollup/plugin-babel'
 import typescript from '@rollup/plugin-typescript'
-import externals from 'rollup-plugin-node-externals'
-import del from 'rollup-plugin-delete'
-import pkg from './package.json'
+import {terser} from 'rollup-plugin-terser'
+import external from 'rollup-plugin-peer-deps-external'
 import dts from 'rollup-plugin-dts'
+
+const packageJson = require('./package.json')
 
 export default [
   {
-    input: './src/index.ts',
-    plugins: [
-      // Delete existing build files.
-      del({targets: 'dist/*'}),
-      // Leave out third-party dependencies (listed under `package.json`'s `dependencies` option) from the bundled outputs. For example, this library hosts components written with React. We can assume that developers using this library will already have React imported in their applications. And so, why include React in the bundled output and add unnecessary bloat?
-      externals({deps: true}),
-      // Find third-party modules within `node_modules` with any one of the following file extensions: `.js`, `.ts` and `.tsx`.
-      nodeResolve({
-        extensions: ['.js', '.ts', '.tsx'],
-      }),
-      // Convert CommonJS modules into ES modules.
-      commonjs(),
-      // Compile the library's code into a format that is consumable by a wider set of browsers. The library's code lives inside `.js`, `.jsx`, `.ts` and `.tsx` files. Do not compile any files from `node_modules`. The `runtime` helper makes Babel's injected helper code reusable for all modules, which greatly reduces bundle size.
-      babel({
-        exclude: ['**/node_modules/**', 'src/tests/**/*'],
-        extensions: ['.js', '.jsx', '.ts', '.tsx'],
-      }),
-      typescript({
-        tsconfig: './tsconfig.build.json',
-        // https://github.com/rollup/plugins/issues/272
-        noEmitOnError: false,
-      }),
-      dts(),
+    input: 'src/index.ts',
+    output: [
+      {
+        file: packageJson.main,
+        format: 'cjs',
+        sourcemap: true,
+        name: 'react-lib',
+      },
+      {
+        file: packageJson.module,
+        format: 'esm',
+        sourcemap: true,
+      },
     ],
-    output: [{file: pkg.main, format: 'cjs'}],
+    plugins: [
+      external(),
+      resolve(),
+      commonjs(),
+      typescript({tsconfig: './tsconfig.json'}),
+      terser(),
+    ],
+  },
+  {
+    input: 'dist/esm/index.d.ts',
+    output: [{file: 'dist/index.d.ts', format: 'esm'}],
+    plugins: [dts()],
   },
 ]
