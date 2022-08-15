@@ -23,7 +23,6 @@ export default [
       commonjs(),
       // Compile the library's code into a format that is consumable by a wider set of browsers. The library's code lives inside `.js`, `.jsx`, `.ts` and `.tsx` files. Do not compile any files from `node_modules`. The `runtime` helper makes Babel's injected helper code reusable for all modules, which greatly reduces bundle size.
       babel({
-        babelHelpers: 'inline',
         exclude: ['**/node_modules/**', 'src/tests/**/*'],
         extensions: ['.js', '.jsx', '.ts', '.tsx'],
       }),
@@ -34,9 +33,6 @@ export default [
       }),
       dts(),
     ],
-    output: [
-      {file: pkg.main, format: 'cjs'},
-      {file: pkg.module, format: 'es'},
-    ],
+    output: [{file: pkg.main, format: 'cjs'}],
   },
 ]
