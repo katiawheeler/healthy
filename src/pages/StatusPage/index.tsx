@@ -1,71 +1,55 @@
-import React, { Component } from 'react';
-import { PageStatus, StatusRow } from '../../components';
-import { begin } from '../../services';
-import { Api, ApiWithResponse, Response } from '../../typings/Api';
-import { Container } from './StatusPage.elements';
+import {css} from '@emotion/css'
+import React from 'react'
+import {PageStatus, StatusRow} from '../../components'
+import {useHealthCheck} from '../../hooks/useHealthCheck'
+import {Api, ApiResponse, Messages} from '../../types'
 
-interface StatusPageProps {
-  /** An array of API objects */
-  apis: Api[];
-  /** The interval at which to call the APIs in milliseconds */
-  interval?: number;
+export type StatusPageConfig = {
+  apis: Api[]
+  interval?: number
+  messages?: Pick<Messages, 'row' | 'statusPage'>
+  onError?: (api: ApiResponse) => void
 }
 
-interface ApiWithError extends ApiWithResponse {
-  hasError: boolean;
+export type StatusPageProps = {
+  config: StatusPageConfig
 }
 
-interface StatusPageState {
-  apis: ApiWithError[];
-  hasError: boolean;
-}
+export function StatusPage({config}: StatusPageProps) {
+  const {apisWithErrors: apiWithErrorsArray, pageHasError} = useHealthCheck({
+    apis: config.apis,
+    interval: config.interval,
+    onError: config.onError,
+  })
+  const apisWithErrors = new Set(apiWithErrorsArray)
 
-class StatusPage extends Component<StatusPageProps> {
-  public state: StatusPageState = {
-    apis: [],
-    hasError: false,
-  };
+  return (
+    <div className={containerStyles}>
+      <PageStatus
+        hasError={pageHasError}
+        messages={config.messages?.statusPage}
+      />
+      {config.apis.map((api, i) => {
+        const apiHasError = apisWithErrors.has(api)
 
-  public handleError = (api: Api, response: Response) => {
-    const apis = [...this.state.apis];
-    const index = apis.findIndex(stateApi => stateApi.api === api);
-    apis[index].hasError = true;
-    apis[index].response = response;
-
-    this.setState(
-      {
-        apis,
-        hasError: true
-      }
-    );
-  };
-
-  public componentDidMount = async () => {
-    const apis = this.props.apis.map(api => ({ api, response: null, hasError: false }));
-
-    this.setState({
-      apis,
-      hasError: false,
-    });
-
-    await begin(this.props.apis, this.handleError, this.props.interval, undefined);
-  };
-
-  public render() {
-    return (
-      <Container>
-        <PageStatus hasError={this.state.hasError} />
-        {this.state.apis.map((api, i) => (
+        return (
           <StatusRow
-            key={api.api.name + api.api.endpoint}
-            name={api.api.name}
-            hasError={api.hasError}
+            key={api.name + api.endpoint}
+            name={api.name}
+            hasError={apiHasError}
             className={i === 0 ? 'first' : ''}
+            messages={config.messages?.row}
           />
-        ))}
-      </Container>
-    );
-  }
+        )
+      })}
+    </div>
+  )
 }
 
-export default StatusPage;
+const containerStyles = css({
+  width: '100%',
+  maxWidth: '800px',
+  margin: '60px auto',
+})
+
+export default StatusPage
