@@ -2,7 +2,7 @@ import {css} from '@emotion/css'
 import React from 'react'
 import {PageStatus, StatusRow} from '../../components'
 import {useHealthCheck} from '../../hooks/useHealthCheck'
-import {Api, ApiResponse, Messages} from '../../types'
+import type {Api, ApiResponse, Messages} from '../../types'
 
 export type StatusPageConfig = {
   apis: Api[]

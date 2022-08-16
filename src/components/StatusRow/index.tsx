@@ -1,6 +1,6 @@
 import {css, cx} from '@emotion/css'
 import React from 'react'
-import {RowMessages} from '../../types'
+import type {RowMessages} from '../../types'
 
 const DEFAULT_MESSAGES = {
   ERROR: 'Service Interruption',
