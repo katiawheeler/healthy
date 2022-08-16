@@ -1,6 +1,6 @@
 import React from 'react'
 import {css, cx} from '@emotion/css'
-import {RowMessages} from '../../types'
+import type {RowMessages} from '../../types'
 
 const DEFAULT_MESSAGES = {
   ERROR: 'We are currently experiencing outages with our services. Stay tuned!',

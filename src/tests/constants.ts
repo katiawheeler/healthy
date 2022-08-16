@@ -1,4 +1,4 @@
-import {Api} from '../types'
+import type {Api} from '../types'
 
 const goodEndpoint = 'https://httpstat.us/200'
 const badEndpoint = 'https://httpstat.us/404'

@@ -1,39 +1,68 @@
-import resolve from '@rollup/plugin-node-resolve'
-import commonjs from '@rollup/plugin-commonjs'
-import typescript from '@rollup/plugin-typescript'
-import {terser} from 'rollup-plugin-terser'
-import external from 'rollup-plugin-peer-deps-external'
-import dts from 'rollup-plugin-dts'
+import {readFileSync} from 'fs';
+import * as path from 'path';
 
-const packageJson = require('./package.json')
+import {babel} from '@rollup/plugin-babel';
+import commonjs from '@rollup/plugin-commonjs';
+import {nodeResolve} from '@rollup/plugin-node-resolve';
+import {externals} from 'rollup-plugin-node-externals';
 
+const pkg = JSON.parse(
+  readFileSync(new URL('./package.json', import.meta.url).pathname),
+);
+const extensions = ['.js', '.jsx', '.ts', '.tsx'];
+
+function generateConfig({output, targets}) {
+  return {
+    input: './src/index.ts',
+    plugins: [
+      externals({deps: true, packagePath: './package.json'}),
+      nodeResolve({extensions}),
+      commonjs(),
+      babel({
+        rootMode: 'upward',
+        extensions,
+        exclude: 'node_modules/**',
+        babelHelpers: 'bundled',
+        // Options that may be present on the `babelConfig` object but
+        // we want to override
+        envName: 'production',
+        // @ts-expect-error targets is a valid babel option but @types/babel__core doesn't know that yet
+        targets,
+      }),
+    ],
+    output,
+  };
+}
+
+/** @type {import('rollup').RollupOptions} */
 export default [
-  {
-    input: 'src/index.ts',
+  generateConfig({
+    targets: 'extends @shopify/browserslist-config, node 12.20',
     output: [
       {
-        file: packageJson.main,
         format: 'cjs',
-        sourcemap: true,
-        name: 'react-lib',
+        dir: path.dirname(pkg.main),
+        preserveModules: true,
+        entryFileNames: '[name][assetExtname].js',
+        exports: 'named',
       },
       {
-        file: packageJson.module,
         format: 'esm',
-        sourcemap: true,
+        dir: path.dirname(pkg.module),
+        preserveModules: true,
+        entryFileNames: '[name][assetExtname].js',
       },
     ],
-    plugins: [
-      external(),
-      resolve(),
-      commonjs(),
-      typescript({tsconfig: './tsconfig.json'}),
-      terser(),
+  }),
+  generateConfig({
+    targets: 'last 1 chrome versions',
+    output: [
+      {
+        format: 'esm',
+        dir: path.dirname(pkg.esnext),
+        preserveModules: true,
+        entryFileNames: '[name][assetExtname].esnext',
+      },
     ],
-  },
-  {
-    input: 'dist/esm/index.d.ts',
-    output: [{file: 'dist/index.d.ts', format: 'esm'}],
-    plugins: [dts()],
-  },
-]
+  }),
+];

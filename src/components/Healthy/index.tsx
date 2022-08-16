@@ -2,7 +2,7 @@ import React, {useState, useCallback, useMemo, useEffect} from 'react'
 import {css, cx} from '@emotion/css'
 
 import {useHealthCheck} from '../../hooks/useHealthCheck'
-import {Api, ApiResponse, BannerMessages} from '../../types'
+import type {Api, ApiResponse, BannerMessages} from '../../types'
 
 export type HealthyProps = {
   config: HealthyConfig

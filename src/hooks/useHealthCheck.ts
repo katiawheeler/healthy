@@ -1,7 +1,7 @@
 import {useCallback, useMemo} from 'react'
 import {useSet} from 'react-use'
 
-import {Api, ApiResponse} from '../types'
+import type {Api, ApiResponse} from '../types'
 import useInterval from './useInterval'
 
 export type HealthCheckConfig = {

@@ -1,7 +1,7 @@
 {
   "name": "react-healthy",
   "description": "Incrementally check and alert your users to the health of your APIs",
-  "version": "2.0.0-beta.8",
+  "version": "2.0.0",
   "private": false,
   "license": "MIT",
   "author": "Katia Wheeler",
