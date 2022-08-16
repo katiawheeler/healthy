@@ -1,46 +1,47 @@
 {
   "name": "react-healthy",
-  "version": "2.0.0-beta.3",
   "description": "Incrementally check and alert your users to the health of your APIs",
-  "main": "dist/cjs/index.js",
-  "module": "dist/esm/index.js",
-  "types": "dist/index.d.ts",
-  "sideEffects": false,
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/katiawheeler/healthy.git"
-  },
-  "author": "Katia Wheeler",
+  "version": "2.0.0-beta.6",
+  "private": false,
   "license": "MIT",
+  "author": "Katia Wheeler",
+  "homepage": "https://github.com/katiawheeler/healthy#readme",
+  "repository": "https://github.com/katiawheeler/healthy.git",
   "bugs": {
     "url": "https://github.com/katiawheeler/healthy/issues"
-  },
-  "homepage": "https://github.com/katiawheeler/healthy#readme",
-  "keywords": [
-    "react",
-    "api",
-    "error",
-    "banner"
-  ],
-  "scripts": {
-    "prebuild": "rimraf dist",
-    "build": "rollup -c",
-    "test": "react-scripts test"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
   },
   "files": [
     "dist",
-    "lib",
-    "lib-esm",
-    "index.d.ts",
-    "!lib/tests",
-    "!lib-esm/tests"
+    "!dist/tests/"
   ],
+  "sideEffects": false,
+  "keywords": [
+    "react",
+    "api",
+    "error",
+    "banner"
+  ],
+  "main": "dist/cjs/index.js",
+  "module": "dist/esm/index.js",
+  "esnext": "dist/esnext/index.esnext",
+  "types": "dist/ts/latest/src/index.d.ts",
+  "scripts": {
+    "build:types": "tsc -b",
+    "build:js": "rollup -c",
+    "prebuild": "rimraf dist",
+    "build": "run-s build:types build:js",
+    "test": "react-scripts test"
+  },
+  "dependencies": {
+    "@types/react": "*",
+    "@types/react-dom": "*"
+  },
   "devDependencies": {
-    "@babel/cli": "^7.1.2",
-    "@babel/core": "^7.18.10",
+    "@babel/core": "^7.15.0",
+    "@babel/node": "^7.14.9",
     "@babel/plugin-proposal-class-properties": "^7.1.0",
     "@babel/plugin-transform-runtime": "^7.18.10",
     "@babel/preset-env": "^7.18.10",
@@ -51,6 +52,8 @@
     "@rollup/plugin-commonjs": "^22.0.2",
     "@rollup/plugin-node-resolve": "^13.3.0",
     "@rollup/plugin-typescript": "^8.3.4",
+    "@shopify/browserslist-config": "^3.0.0",
+    "@shopify/typescript-configs": "^5.1.0",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.3.0",
     "@testing-library/react-hooks": "^8.0.1",
@@ -60,12 +63,12 @@
     "@types/react-dom": "^18.0.6",
     "@typescript-eslint/parser": "^5.33.0",
     "babel-core": "^7.0.0-bridge.0",
-    "babel-minify": "^0.5.0",
-    "dotenv": "^16.0.1",
-    "dotenv-cli": "^6.0.0",
+    "babel-loader": "^8.1.0",
+    "babel-preset-minify": "^0.5.2",
     "eslint": "^8.21.0",
     "extract-text-webpack-plugin": "^3.0.2",
     "jest": "^28.1.3",
+    "npm-run-all": "^4.1.5",
     "prettier": "^1.16.3",
     "react": "*",
     "react-dom": "*",
@@ -83,5 +86,15 @@
   "peerDependencies": {
     "react": "*",
     "react-dom": "*"
-  }
+  },
+  "browserslist": [
+    "last 3 chrome versions",
+    "last 3 firefox versions",
+    "last 3 opera versions",
+    "last 3 edge versions",
+    "last 3 safari versions",
+    "last 3 chromeandroid versions",
+    "last 1 firefoxandroid versions",
+    "ios >= 13.4"
+  ]
 }
