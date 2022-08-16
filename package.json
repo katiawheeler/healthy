@@ -1,7 +1,7 @@
 {
   "name": "react-healthy",
   "description": "Incrementally check and alert your users to the health of your APIs",
-  "version": "2.0.0-beta.7",
+  "version": "2.0.0-beta.8",
   "private": false,
   "license": "MIT",
   "author": "Katia Wheeler",
@@ -38,7 +38,8 @@
   "dependencies": {
     "@emotion/css": "^11.10.0",
     "@types/react": "*",
-    "@types/react-dom": "*"
+    "@types/react-dom": "*",
+    "react-use": "^17.4.0"
   },
   "devDependencies": {
     "@babel/core": "^7.15.0",
